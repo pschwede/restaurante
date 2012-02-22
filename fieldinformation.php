@@ -56,8 +56,8 @@ if (isset($_GET["x"],$_GET["y"])) {
 							echo "<a href=\"".$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=2&x=".$_GET["x"]."&y=".$_GET["y"]."\" target=\"_top\" class=\"withIconLeft build\">Haus bauen</a> (500 000&euro;)<br>";
 							echo "<a href=\"".$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=3&x=".$_GET["x"]."&y=".$_GET["y"]."\" target=\"_top\" class=\"withIconLeft build\">Platz bauen</a> (15 000&euro;)<br>";
 							echo "<a href=\"".$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=4&x=".$_GET["x"]."&y=".$_GET["y"]."\" target=\"_top\" class=\"withIconLeft build\">begrünen</a> (5 000&euro;)<br>";
-							echo "<a href=\"".$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=5&x=".$_GET["x"]."&y=".$_GET["y"]."\" target=\"_top\" class=\"withIconLeft build\">Wohnhaus bauen</a> (6 000&euro;)<br>";
-							echo "<a href=\"".$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=6&x=".$_GET["x"]."&y=".$_GET["y"]."\" target=\"_top\" class=\"withIconLeft build\">Hochhaus bauen</a> (22 000&euro;)<br>";
+							echo "<a href=\"".$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=5&x=".$_GET["x"]."&y=".$_GET["y"]."\" target=\"_top\" class=\"withIconLeft build\">Wohnhaus bauen</a> (22 000&euro;)<br>";
+							echo "<a href=\"".$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=6&x=".$_GET["x"]."&y=".$_GET["y"]."\" target=\"_top\" class=\"withIconLeft build\">Hochhaus bauen</a> (1 500 000&euro;)<br>";
 							echo "<a class=\"withIconLeft buy\" href=\"".$PHP_SELF."?city=".$_GET["city"]."&sell=".$token."&x=".$_GET["x"]."&y=".$_GET["y"]."\">Verkaufen</a> (".number_format(-$ground["price"]*0.9,2,","," ")." &euro;)<br>";
 						} else {
 							echo "Kette: ".$owner["kette"];

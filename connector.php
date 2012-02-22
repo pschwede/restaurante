@@ -1,7 +1,9 @@
 <?php
 
+include_once $config.php;
+
 function makeConn() {
-	@$db = new mysqli("localhost", "username", "password", "databasename");
+	@$db = new mysqli("localhost", "yourname", "yourpassword", "yourdatabase");
 	if (mysqli_connect_errno())
 	  die("Verbindung fehlgeschlagen: ". mysqli_connect_error());
 	else return $db;

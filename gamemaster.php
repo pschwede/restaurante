@@ -7,7 +7,7 @@ include_once "generator.php";
 
 function buyGround($worldid,$city,$hex,$playerid) {
 	$db = makeConn();
-	// testen ob feld unbesetzt, testen ob geld des spielers reicht, geld abziehen, grundstäck in player eintragen
+	// testen ob feld unbesetzt, testen ob geld des spielers reicht, geld abziehen, grundstück in player eintragen
 	if (hexdec($hex)>0) {
 		$plr = getPlayer($playerid);
 
@@ -20,7 +20,7 @@ function buyGround($worldid,$city,$hex,$playerid) {
 
 		if (!$ground["ownerid"]>0) {
 			if ($ground["price"] <= $plr["konto"]) {
-				//gesamtes Grundstäck verkaufen
+				//gesamtes Grundstück verkaufen
 				$area = array();
 				$map = getMapFromSQL($worldid,$city);
 				$imax = getSizeOfArea($map, $ground["x"], $ground["y"], $hex, $area);
@@ -29,17 +29,17 @@ function buyGround($worldid,$city,$hex,$playerid) {
 					$db->query("UPDATE grounds SET ownerid=".$playerid." WHERE worldid='".$worldid."' AND x='".$xyp[0]."' AND y='".$xyp[1]."' AND city='".$city."'");
 					$db->query("UPDATE grounds SET state=1 WHERE worldid='".$worldid."' AND x='".$xyp[0]."' AND y='".$xyp[1]."' AND city='".$city."'");
 				}
-				$db->query("UPDATE player SET konto=".($plr["konto"]-$ground["price"]).",outgo=".($plr["outgo"]+$ground["price"])." WHERE id=".$playerid) or die("Fehler bei äberweisung!");
+				$db->query("UPDATE player SET konto=".($plr["konto"]-$ground["price"]).",outgo=".($plr["outgo"]+$ground["price"])." WHERE id=".$playerid) or die("Fehler bei Überweisung!");
 			} else {
 				echo "Kauf nicht finanzierbar.";
 				return 2;
 			}
 		} else {
-			echo "Grundstäck schon in Besitz.";
+			echo "Grundstück schon in Besitz.";
 			return 1;
 		}
 	} else {
-		echo "Kein Grundstäck.";
+		echo "Kein Grundstück.";
 		return 3;
 	}
 	$db->Close();
@@ -48,7 +48,7 @@ function buyGround($worldid,$city,$hex,$playerid) {
 
 function sellGround($worldid,$city,$hex,$playerid) {
 	$db = makeConn();
-	// testen ob feld unbesetzt, testen ob geld des spielers reicht, geld abziehen, grundstäck in player eintragen
+	// testen ob feld unbesetzt, testen ob geld des spielers reicht, geld abziehen, grundstück in player eintragen
 	if (hexdec($hex)>0) {
 		$plr = getPlayer($playerid);
 
@@ -69,18 +69,18 @@ function sellGround($worldid,$city,$hex,$playerid) {
 			$frei &= $gnd["state"]<=1;
 		}
 		if ($ground["ownerid"]>0 && $ground["state"]<=1 && $frei) {
-			//gesamtes Grundstäck verkaufen
+			//gesamtes Grundstück verkaufen
 			foreach($area as $xypstring) {
 				$xyp = split(",",$xypstring);
 				$db->query("UPDATE grounds SET ownerid=NULL, stars=0 ,state=0 WHERE worldid=".$worldid." AND hex='".$xyp[2]."' AND city='".$city."'");// or die("error selling ground");
 			}
-			$db->query("UPDATE player SET konto=konto+".($ground["price"]*0.9).",outgo=outgo-".($ground["price"]*0.9)." WHERE id=".$playerid) or die("Fehler bei äberweisung!");
+			$db->query("UPDATE player SET konto=konto+".($ground["price"]*0.9).",outgo=outgo-".($ground["price"]*0.9)." WHERE id=".$playerid) or die("Fehler bei überweisung!");
 		} else {
 			echo "Kein Restaurant.";
 			return 1;
 		}
 	} else {
-		echo "Kein Grundstäck.";
+		echo "Kein Grundstück.";
 		return 3;
 	}
 	$db->Close();
@@ -89,7 +89,7 @@ function sellGround($worldid,$city,$hex,$playerid) {
 
 function buildOnGround($worldid,$city,$hex,$what,$playerid) {
 	$db = makeConn();
-	// testen ob feld unbesetzt, testen ob geld des spielers reicht, geld abziehen, grundstäck in player eintragen
+	// testen ob feld unbesetzt, testen ob geld des spielers reicht, geld abziehen, grundstück in player eintragen
 	if (hexdec($hex)>0) {
 		$player = getPlayer($playerid);
 		if($result = $db->query("SELECT * FROM grounds WHERE worldid=".$worldid." AND city='".$city."' AND hex='".$hex."'")) {
@@ -106,7 +106,7 @@ function buildOnGround($worldid,$city,$hex,$what,$playerid) {
 				&& $numpers[0] == 0) {
 			switch($what) {
 				case 1:
-					$kontoneu = 0; //Abreiäen
+					$kontoneu = 0; //Abreißen
 					$db->query("UPDATE city SET population=population-".$ground["customers"]." WHERE hex='".$city."'");
 					break;
 				case 2:
@@ -120,13 +120,13 @@ function buildOnGround($worldid,$city,$hex,$what,$playerid) {
 					$kontoneu = 15000; //Platz
 					break;
 				case 4:
-					$kontoneu = 5000; //begränt
+					$kontoneu = 5000; //begrünt
 					break;
 				case 5:
 					$kontoneu = 6000; // kl Wohnhaus
 					break;
 				case 6:
-					$kontoneu = 22000; // gr Wohnhaus
+					$kontoneu = 1500000; // gr Wohnhaus
 					break;
 				default:
 					$kontoneu = 0;
@@ -140,7 +140,7 @@ function buildOnGround($worldid,$city,$hex,$what,$playerid) {
 					or die("error during building: ".$query);
 
 				if (!$db->query("UPDATE player SET konto=konto-$kontoneu, outgo=outgo+$kontoneu WHERE id=$playerid")) {
-					echo "Fehler bei äberweisung.";
+					echo "Fehler bei Überweisung.";
 					return 4;
 				}
 			} else {
@@ -150,15 +150,15 @@ function buildOnGround($worldid,$city,$hex,$what,$playerid) {
 		} else {
 			switch($what) {
 				case 1:
-					echo "Kann nicht Abreiäen &rarr Mitarbeiter entlassen, Einrichtung verkaufen!";
+					echo "Kann nicht Abreißen &rarr Mitarbeiter entlassen, Einrichtung verkaufen!";
 					break;
 				default:
-					echo "Kein Platz fär Bau.";
+					echo "Kein Platz für Bau.";
 			}
 			return 1;
 		}
 	} else {
-		echo "Feld ist kein Grundstäck.";
+		echo "Feld ist kein Grundstück.";
 		return 3;
 	}
 	$db->Close();
@@ -184,11 +184,11 @@ function buyFixture($worldid,$city,$hex,$fixtureid,$playerid) {
 						or die("error updating ground");
 				} else echo "Erst alle Tische verkaufen!";
 				break;
-			case 2: //käche
+			case 2: //küche
 				if($gnd["kitchensid"]==$fxt["id"] || $gnd["kitchensnum"]<=0){
 					$db->query("UPDATE grounds SET kitchensid=".$fxt["id"].", kitchensnum=".($gnd["kitchensnum"]+1)." WHERE hex='".$gnd["hex"]."' AND city='$city' AND worldid=$worldid")
 						or die("error updating ground");
-				} else echo "Erst alle Kächen verkaufen!";
+				} else echo "Erst alle Küchen verkaufen!";
 				break;
 			case 3: //bad
 				if($gnd["toiletsid"]==$fxt["id"] || $gnd["toiletsnum"]<=0){
@@ -198,8 +198,8 @@ function buyFixture($worldid,$city,$hex,$fixtureid,$playerid) {
 				break;
 		}
 		$db->query("UPDATE grounds SET remainingarea=".getRemainingSpaceOnGround($worldid,$gnd["city"],$gnd["hex"])." WHERE hex='".$gnd["hex"]."' AND city='$city' AND worldid=$worldid") or die("error calcing space");
-		$db->query("UPDATE player SET konto=".($plr["konto"]-$fxt["price"])." WHERE id=$playerid") or die("Fehler bei äberweisung");
-		$db->query("UPDATE player SET outgo=".($plr["outgo"]+$fxt["price"])." WHERE id=$playerid") or die("Fehler bei äberweisung");
+		$db->query("UPDATE player SET konto=".($plr["konto"]-$fxt["price"])." WHERE id=$playerid") or die("Fehler bei Überweisung");
+		$db->query("UPDATE player SET outgo=".($plr["outgo"]+$fxt["price"])." WHERE id=$playerid") or die("Fehler bei Überweisung");
 	}
 	$db->Close();
 }
@@ -224,7 +224,7 @@ function sellFixture($worldid,$city,$hex,$fixtureid,$playerid) {
 					}
 				}
 				break;
-			case 2: //käche
+			case 2: //küche
 				if($gnd["kitchensnum"]>0){
 					if($gnd["kitchensnum"]>1) {
 						$db->query("UPDATE grounds SET kitchensnum=".($gnd["kitchensnum"]-1)." WHERE hex='$hex' AND city='$city' AND worldid=$worldid")
@@ -249,8 +249,8 @@ function sellFixture($worldid,$city,$hex,$fixtureid,$playerid) {
 			default: break;
 		}
 		$db->query("UPDATE grounds SET remainingarea=".getRemainingSpaceOnGround($worldid,$gnd["city"],$gnd["hex"])." WHERE hex='$hex' AND city='$city' AND worldid=$worldid") or die("error calcing space");
-		$db->query("UPDATE player SET konto=konto+".(0.75*$fxt["price"])." WHERE id=$playerid") or die("Fehler bei äberweisung");
-		$db->query("UPDATE player SET outgo=outgo-".(0.75*$fxt["price"])." WHERE id=$playerid") or die("Fehler bei äberweisung");
+		$db->query("UPDATE player SET konto=konto+".(0.75*$fxt["price"])." WHERE id=$playerid") or die("Fehler bei Überweisung");
+		$db->query("UPDATE player SET outgo=outgo-".(0.75*$fxt["price"])." WHERE id=$playerid") or die("Fehler bei Überweisung");
 		$db->Close();
 	}
 }
@@ -268,7 +268,7 @@ function hirePersonel($worldid,$city,$personel,$hire,$playerid) {
 				or die("error adding personel ".$query);
 			$db->query("DELETE FROM choosablepersonel WHERE id=$hire") or die("error hiring personel #2");
 		} else echo "Niemand";
-	} else echo "nicht dein Grundstäck!";
+	} else echo "nicht dein Grundstück!";
 	echo $pers["name"]." wurde eingestellt.";
 	$db->Close();
 }
@@ -423,7 +423,7 @@ function setStatsOfGroundsAndPlayers($worldid,$city) {
 	if($r_grounds = $db->query("SELECT * FROM grounds WHERE state>1 AND ownerid>0 AND city='".$city["hex"]."' AND worldid=".$worldid)) {
 		while($gnd = $r_grounds->fetch_array(MYSQLI_ASSOC)) {
 			$plr = getPlayer($gnd["ownerid"]);
-			// Lähne holen
+			// Löhne holen
 			$pays = 0;
 			if($r_pays = $db->query("SELECT SUM(pay) FROM hiredpersonel WHERE city='".$gnd["city"]."' AND hex='".$gnd["hex"]."' AND worldid=".$worldid))
 				if($tmp = $r_pays->fetch_array(MYSQLI_NUM))
@@ -431,8 +431,14 @@ function setStatsOfGroundsAndPlayers($worldid,$city) {
 						$pays = $tmp[0];
 			// energiekosten
 			$energiekosten = getEnergyOfGround($gnd);
+			//Ertrag von festen Mieten
+			$query = "SELECT COUNT(*) FROM grounds WHERE state=6 AND ownerid=".$plr["id"];
+			$r_anz = $db->query($query);
+			$mieten = $r_anz->fetch_array(MYSQLI_NUM);
+			$mieten = $anz * 10000;
+			$mieten = $anz * 8000;
 			// Ertrag berechenn
-			$ingo = $gnd["price4food"]*$gnd["customers"];
+			$ingo = $gnd["price4food"]*$gnd["customers"] + $mieten;
 			// ground update
 			$query = "UPDATE grounds SET ingo=$ingo, pays=$pays, energycost=$energiekosten WHERE id=".$gnd["id"];
 			if(!$db->query($query)) {
@@ -611,36 +617,39 @@ function setCustomersOfHotels($worldid,$city) {
 	if($mglmieter<0)
 		$mglmieter = 0;
 
-	for($state=5; $state<=6; $state++) {
-		$query = "SELECT COUNT(*) FROM grounds WHERE state=$state AND city='".$city["hex"]."'";
-		$r_count = $db->query($query);
-		$count = $r_count->fetch_array(MYSQLI_NUM);
-		if($count[0]>0)
-			$mieter = ceil($mglmieter/$count[0]);
-		else
-			$mieter = 0;
+	$state = 5;
+	$query = "SELECT COUNT(*) FROM grounds WHERE state=$state AND city='".$city["hex"]."'";
+	$r_count = $db->query($query);
+	$count = $r_count->fetch_array(MYSQLI_NUM);
+	if($count[0]>0)
+		$mieter = ceil($mglmieter/$count[0]);
+	else
+		$mieter = 0;
 
-		switch($state) {
-			case 5:
-				$maxmieter=30;
-				break;
-			case 6:
-				$maxmieter=90;
-				break;
-		}
-		if($mieter>$maxmieter)
-			$mieter=$maxmieter;
-
-		$allemieter += $mieter*$count[0];
-		$mglmieter -= $mieter*$count[0];
-
-		$query = "SELECT * FROM grounds WHERE state=$state AND city='".$city["hex"]."'";
-		$r_gnd = $db->query($query) or die("Error during setCustomersOfHotels: ".$query);
-		while($gnd = $r_gnd->fetch_array(MYSQLI_ASSOC)) {
-			$query = "UPDATE grounds SET customers=$mieter WHERE id=".$gnd["id"];
-			$db->query($query) or die("Error during setCustomersOfHotels: ".$query);
-		}
+	switch($state) {
+		case 5:
+			$maxmieter=90;
+			break;
 	}
+	if($mieter>$maxmieter)
+		$mieter=$maxmieter;
+
+	$allemieter += $mieter*$count[0];
+	$mglmieter -= $mieter*$count[0];
+
+	$query = "SELECT * FROM grounds WHERE state=$state AND city='".$city["hex"]."'";
+	$r_gnd = $db->query($query) or die("Error during setCustomersOfHotels: ".$query);
+	while($gnd = $r_gnd->fetch_array(MYSQLI_ASSOC)) {
+		$query = "UPDATE grounds SET customers=$mieter WHERE id=".$gnd["id"];
+		$db->query($query) or die("Error during setCustomersOfHotels: ".$query);
+	}
+	
+	$state = 6;
+	$query = "UPDATE grounds SET customers=180 WHERE state=$state AND city='".$city["hex"]."'";
+	$db->query($query) or die("Error2 during setCustomersOfHotels: ".$query);
+	$r_c6 = $db->query("SELECT COUNT(*) FROM grounds WHERE state=$state AND city='".$city["hex"]."'") or die("Error3 during setCustomersOfHotels");
+	if($c6 = $r_c6->fetch_array(MYSQLI_ASSOC))
+		$allemieter += $c6[0];
 	$query = "UPDATE cities SET population=".($cpop+$allemieter)." WHERE id='".$city["id"]."'";
 	$db->query($query) or die("Error during setCustomersOfHotels: ".$query);
 	$db->Close();
@@ -817,13 +826,13 @@ function kickSomeAss($worldid,$city,$hex,$what,$kickerid) {
 						} else echo "Dein Opfer hat kein Geld.";
 					} else echo "Die Sprayer haben zu wenig Respekt vor dir!";
 					break;
-				case 2: //Gerächt
+				case 2: //Gerücht
 					if($kicker["deeds"]>=10) {
 						$db->query("UPDATE grounds SET customers=0 WHERE hex='$hex' AND city='$city' AND worldid=$worldid");
 						$db->query("UPDATE player SET deeds=deeds-10 WHERE id=$kickerid");
-						echo "Ein Skandal! In ".$victim["name"]."'s Filiale gab's angeblich Stäcke von Pflanzen-Kadaver zu essen!";
-						sendMessage(0,$victim["id"],"Gerächt","äber <a href=\"game.php?city=".$gnd["city"]."&hex=".$gnd["hex"]."&x=".$gnd["x"]."&y=".$gnd["y"]."\" target=\"_top\">eine Filiale</a> wurde ein mieses Gerächt verbreitet. Die Kunden blieben diesmal aus.",5);
-					} else echo "Dir fallen keine Gerächte ein!";
+						echo "Ein Skandal! In ".$victim["name"]."'s Filiale gab's angeblich Stücke von Pflanzen-Kadaver zu essen!";
+						sendMessage(0,$victim["id"],"Gerücht","über <a href=\"game.php?city=".$gnd["city"]."&hex=".$gnd["hex"]."&x=".$gnd["x"]."&y=".$gnd["y"]."\" target=\"_top\">eine Filiale</a> wurde ein mieses Gerücht verbreitet. Die Kunden blieben diesmal aus.",5);
+					} else echo "Dir fallen keine Gerüchte ein!";
 					break;
 				case 5: //Hygiene
 					if($kicker["deeds"]>=20) {
@@ -848,7 +857,7 @@ function kickSomeAss($worldid,$city,$hex,$what,$kickerid) {
 							if($counter>0)
 								$averageRelia /= $counter;
 							else {
-								echo("Hat noch keine Angestellten und damit noch nicht Eräffnet!");
+								echo("Hat noch keine Angestellten und damit noch nicht Eröffnet!");
 								return;
 							}
 
@@ -879,11 +888,11 @@ function kickSomeAss($worldid,$city,$hex,$what,$kickerid) {
 									$stars = 0;
 								$db->query("UPDATE grounds SET stars=$stars WHERE hex='".$gnd["hex"]."' AND city='".$gnd["city"]."' AND worldid=".$gnd["worldid"]);
 								echo $victim["name"]."'s Filiale wurde mit $stars Sternen ausgezeichnet!";
-								sendMessage(0,$victim["id"],"Vorzäglich","<a href=\"game.php?city=".$gnd["city"]."&hex=".$gnd["hex"]."&x=".$gnd["x"]."&y=".$gnd["y"]."\" target=\"_top\">Eine Filiale</a> wurde mit $stars Sternen ausgezeichnet! Gläckwunsch.",4);
+								sendMessage(0,$victim["id"],"Vorzüglich","<a href=\"game.php?city=".$gnd["city"]."&hex=".$gnd["hex"]."&x=".$gnd["x"]."&y=".$gnd["y"]."\" target=\"_top\">Eine Filiale</a> wurde mit $stars Sternen ausgezeichnet! Glückwunsch.",4);
 							}
 							$db->query("UPDATE player SET deeds=deeds-20 WHERE id=".$kicker["id"])
 								or die("error during deeds update");
-						} else echo "Mit deinem Drecksladen wärd ich nicht die Hygieneämter zu mehr Aufmerksamkeit anregen!";
+						} else echo "Mit deinem Drecksladen würd ich nicht die Hygieneämter zu mehr Aufmerksamkeit anregen!";
 					} else echo "Gedulde dich noch ein bisschen!";
 					break;
 			}
@@ -900,7 +909,7 @@ function addShare($shareholder,$company,$value,$ia,$count) {
 				$db->query($query) or die("Error during share adding: ".$query);
 			} else return "Der Wert pro Aktie wäre zu hoch! Maximaler Einstiegswert: 500 &euro;";
 		} else return "Der Wert pro Aktie wäre zu gering! Minimaler Einstiegswert: 1 &euro;";
-	} else return "Dein Bärsenwert hat noch 50000 noch nicht erreicht";
+	} else return "Dein Börsenwert hat noch 50000 noch nicht erreicht";
 	$db->Close();
 }
 

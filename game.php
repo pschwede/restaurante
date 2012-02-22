@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+include_once "config.php";
 include_once "smarttools.php";
 include_once "gamemaster.php";
 include_once "displays.php";
@@ -181,7 +182,7 @@ if(isset($_GET["rstgm"]) && $_SESSION["id"]==1)
 	restartGame($worldid);
 
 if($nextTick <= $time) {
-	makeTick($worldid,8); //2h //8h
+	makeTick($worldid,4); //2h //8h
 }
 if(isset($_GET["rsttm"]) && $_SESSION["id"]==1) {
 	resetNextTickTime($worldid);

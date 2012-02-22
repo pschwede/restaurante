@@ -10,7 +10,7 @@
 <meta name="description" content="Restaurante - Die anderen haben widerlicheren Fraß als du!" />
 <meta name="author" content="P. Schwede" />
 <meta name="revisit-after" content="2 days" />
-<meta name="copyright" content="All content is (CC) P. Schwede &amp; S. Schubert, some rights reserved" />
+<meta name="copyright" content="Copyright (GPL) of P. Schwede &amp; S. Schubert, some rights reserved" />
 <meta name="robots" content="FOLLOW,INDEX" />
 <title>Restaurante (Beta)</title>
 </head>
@@ -96,7 +96,7 @@ span {
 		<td>
 			<h1 style="padding-left:275px;">Restaurante (Beta)</h1>
 			<a class="withIconTop faq" target="_blank" href="faq/">Was ist das?</a>
-			<a class="withIconTop blank" target="_blank" href="http://psprince2.ps.funpic.de/forum/index.php?action=collapse;c=3;sa=collapse;#3">Forum</a>
+			<a class="withIconTop blank" target="_blank" href="<?php $FORUM_URL ?>">Forum</a>
 		</td>
 	</tr><tr>
 		<td class="main">
@@ -167,7 +167,7 @@ if(!table_exists("highscore2")) {
 	createHighscore2TableSQL($worldid);
 }
 echo "..fertig.<br>";
-echo "Version 0.9.9.6<br>";
+echo "Version 0.9.9.9<br>";
 ?>
 <img src="img/cur.gif" alt="">
 </div>

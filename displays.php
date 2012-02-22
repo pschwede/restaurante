@@ -1058,7 +1058,7 @@ function drawBilance($playerid) {
 
 function drawPrice4FoodMenu($gnd) {
 	echo "<select title=\"Preis auswählen\">\n\t\n";
-	for($i=1; $i<10; $i++) {
+	for($i=1; $i<6; $i++) {
 		echo "<option";
 		if($gnd["price4food"]==$i) {
 			echo " selected";
