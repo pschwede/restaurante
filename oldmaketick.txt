@@ -1,0 +1,122 @@
+function makeTick($worldid, $hours) {
+	$db = makeConn();
+	
+	$db->query("UPDATE player SET ia=0,ingo=0,energycost=0, pays=0"); //TODO: neue spalte für Anschaffungen!!
+	
+	$ia=0;
+	$log = date("G:i:s".getNextTick($worldid)).": ";
+	$query = "SELECT * FROM grounds WHERE state=2 AND ownerid>0 AND worldid=$worldid";
+	$result = $db->query($query) or die("error loading grounds");
+	while($gnd = $result->fetch_array(MYSQLI_ASSOC)) { //für jedes Grundstück
+		$city = getCity($worldid,$gnd["city"]);
+		$eigenattr = getAttrOfGround($gnd);
+		$eigenmaxcust = getMaxCustOfGround($gnd);		
+		$custneu = 0;
+		$parkfaktor = 0;
+		$map = getMapFromSQL($worldid,$gnd["city"]);
+		$nbh = getNbh($map,$gnd["x"],$gnd["y"]);
+		foreach($nbh as $nbstring) { //jeden Nachbarn nach gegnern durchsuchen - STASI-ALARM ;)
+			$nb = split(",",$nbstring);
+			if($nb[2]=="HG" or $nb[2]=="HH" or $nb[2] == "HI") {
+				$gegnerattr = 0;
+				$tmp = getNbh($map,$nb[0],$nb[1]);
+				foreach($tmp as $nbnbstring) { //nachbar vom nachbar
+					$nbnb = split(",",$nbnbstring);
+					if(hexdec($nbnb[2])>0) {
+						$nbgnd = getGround($worldid,$gnd["city"],$nbnb[2]);
+						if($nbgnd["ownerid"]>0 && $nbgnd["hex"]!=$gnd["hex"]) {
+							$gegnerattr += getAttrOfGround($nbgnd);
+							if( $gegnerattr != 0 && $eigenattr != 0 ) {
+								$custneu += $city["popdichte"]*(1/$gegnerattr) / ((1/$eigenattr) + (1/$gegnerattr)); 
+							}
+						} elseif($eigenattr != 0 && $gegnerattr == 0) {
+							$custneu += $city["popdichte"];
+						}
+					}
+				}
+			} elseif (hexdec($nb[2])>0) { //Nachbar ist parkplatz
+				if($gnb["state"]==3) { //parkplatz
+					$tmp = getNbh($map,$nb[0],$nb[1]);
+					foreach($tmp as $nbnbstring) { //nachbar vom nachbar
+						$nbnb = split(",",$nbnbstring);
+						if ($nbnb[2] == "SG" || $nbnb[2] == "SH" || $nbnb[2] == "SI") {
+							$parkfaktor++;
+						}	
+					}
+				}
+			}
+		}
+		
+		$custneu += 0.01*(countPatterns($nbh,"SG","SH","SI")+2*$parkfaktor)*$city["population"];
+		if($custneu > $eigenmaxcust)
+			$custneu = $eigenmaxcust;
+		$custneu *= 50;
+		$db->query("UPDATE grounds SET customers=$custneu WHERE id=".$gnd["id"]) or die("error setting new customers");
+		
+		$plr = getPlayer($gnd["ownerid"]);
+		
+		$log .= $plr["name"].":";
+		$lohn = 0;
+		if($result1 = $db->query("SELECT SUM(pay) FROM hiredpersonel WHERE worldid=".$worldid." AND hex='".$gnd["hex"]."' AND city='".$gnd["city"]."'"))
+		$lohn = $result1->fetch_array(MYSQL_NUM);
+		
+		$db->query("UPDATE player SET pays=".($plr["pays"]+$lohn[0])." WHERE id=".$plr["id"]) or die("error setting pays");
+		
+		$einnahmen = 0;
+		if($gnd["state"]==2) {
+			$einnahmen += $gnd["price4food"]*$custneu;
+			$db->query("UPDATE player SET ingo=".($plr["ingo"]+$gnd["price4food"]*$custneu)." WHERE id=".$plr["id"]) or die("error setting ingo");
+		}
+		$log .= "=".($plr["ingo"]+$einnahmen)." ";
+		
+		$energiekosten = getEnergyOfGround($gnd);
+			$db->query("UPDATE player SET energycost=".($plr["energycost"]+$energiekosten)." WHERE id=".$plr["id"]) or die("error setting energycost");
+		
+		$kontoneu = $plr["konto"];
+		$kontoneu += $einnahmen;
+		$kontoneu -= $lohn[0];
+		$kontoneu -= $energiekosten; //TODO: Strompreis?
+		$db->query("UPDATE player SET konto=$kontoneu WHERE id=".$plr["id"]) or die("Fehler bei Überweisung");
+		
+		// InvestmentApproach berechnen
+		$ia = ($einnahmen - $lohn[0] - $energiekosten)*($gnd["price"]/$gnd["area"]/$gnd["area"]);
+		$db->query("UPDATE player SET ia=".($plr["ia"]+$ia)." WHERE id=".$plr["id"]) or die ("error setting ia");
+	}
+	$time = time();
+	$result2 = $db->query("SELECT * FROM player") or die("could not load player");
+	while($plr = $result2->fetch_array(MYSQLI_ASSOC)) {
+		if($plr["konto"]>550000) {
+			$zinsen = $plr["konto"]*0; //keine Zinsen mehr!
+		} elseif($plr["konto"]>500000) {
+			$zinsen = $plr["konto"]*0.01;
+		} elseif($plr["konto"]>50000) {
+			$zinsen = $plr["konto"]*0.02;
+		} elseif($plr["konto"]>5000) {
+			$zinsen = $plr["konto"]*0.025;
+		} elseif($plr["konto"]>0) {
+			$zinsen = $plr["konto"]*0.03; //Zinsen!
+		} else {
+			$zinsen = $plr["konto"]*0.01; //Kreditzinsen
+		}
+		$db->query("UPDATE player SET zinsen=$zinsen WHERE id=".$plr["id"]) or die ("error setting zinsen");
+		$kontoneu = $plr["konto"]+$zinsen;
+		$db->query("UPDATE player SET konto=$kontoneu WHERE id=".$plr["id"]) or die("Fehler bei Überweisung");
+	
+		$result4 = $db->query("SELECT COUNT(*) FROM grounds WHERE state=2 AND ownerid=".$plr["id"]); //anzahl restaurants
+		$anzrest = $result4->fetch_array(MYSQLI_NUM);
+		if($anzrest[0]>0)
+			$ia = $plr["ia"]/$anzrest[0];
+		else
+			$ia = 0;
+		$db->query("UPDATE player SET others=".$plr["outgo"].",ia=$ia WHERE id=".$plr["id"]) or die("error setting others and ia");
+		$db->query("UPDATE player SET outgo=0") or die("error resetting outgo");
+		addStatement($plr["id"],$time,$kontoneu,$ia);
+	}
+	$oldtick = getNextTick($worldid);
+	$then = mktime(date("G",getNextTick($worldid))+$hours,0,0);
+	$db->query("UPDATE world SET nexttick=$then WHERE id=".$worldid) or die("Fehler bei Tickaktualisierung");
+	createChoosablePersonelTableSQL($worldid);
+	echo "Tick von ".date("G:i:s",$oldtick)." wurde ausgelöst.";
+	$db->query("UPDATE world SET log=\"$log\" WHERE id=".$worldid) or die("error logging");
+	$db->Close();
+}

@@ -1,0 +1,177 @@
+<html>
+<head>
+<title>Restaurante-FAQ</title>
+</head>
+<style type="text/css">
+body {
+	background-color: #850;
+	background-image:url(../img/background.png);
+	background-repeat:repeat-x;
+	color: #FEB;
+	font-family:sans-serif;
+}
+.content {
+	background-color:#fff;
+	color:#000;
+	margin:0px auto;
+	padding:64px;
+	width:600px;
+}
+.menu-l {
+	position:fixed;
+	width:192px;
+	top:0px;
+	left:0px;
+	padding:10px;
+}
+dl{
+	padding-bottom:80px;
+	padding-top:0px;
+}
+dt {
+	font-size: 16pt;
+	padding-top: 13px;
+}
+img {
+	margin-left:128px
+}
+</style>
+<body>
+<div class="menu-l">
+<h2>Restaurante</h2>
+<h1><a name="top">FAQ</a></h1>
+<form>
+<select>
+	<option onClick="javascript:window.location:href='#Spiel'">Spiel</option>
+	<option onClick="javascript:window.location.href='#1'">Was ist das?</option>
+	<option onClick="javascript:window.location.href='#3'">und jetzt?</option>
+	<option onClick="javascript:window.location.href='#Kunden'">Kunden?</option>
+	<option onClick="javascript:window.location.href='#Attraktivität'">Attr?</option>
+	<option onClick="javascript:window.location.href='#Konto'">Geld?</option>
+	<option onClick="javascript:window.location.href='#Tick'">Wann Tick?</option>
+	<option onClick="javascript:window.location.href='#Logo'">Logo?</option>
+	<option onClick="javascript:window.location.href='#Umgebung'">Umgebung?</option>
+	<option onClick="javascript:window.location.href='#Fehler'">Fehler?</option>
+	<option onClick="javascript:window.location.href='#Attacken'">Attacken</option>
+	<option onCLick="javascript:window.location:href='#Technik'">Technik</option>
+	<option onClick="javascript:window.location.href='#Passwort'">Passwort lesen?</option>
+	<option onClick="javascript:window.location.href='#Adblock'">Adblock?</option>
+</select>
+
+</form>
+Bei weiteren Fragen: <a href="http://psprince2.ps.funpic.de/forum/index.php?action=collapse;c=3;sa=collapse;#3">Forum</a><br>
+CTRL+F um zu suchen<br>
+</div>
+<div class="content">
+	<h2><a name="Spiel">Spiel</a></h2>
+	<dl>
+	<dt><a name="1">Was ist das?</a></dt>
+	<dd>
+		Ein Spiel. Es geht darum, eine Restaurantkette aufzubauen und
+		sich gegenüber den anderen Mitspielern zu behaupten und möglichst viele Kunden anzulocken.
+		Später soll man auch direkte Angriffe auf die Gegner ausüben können (Giftattacken, Gesundheitsamt,..)
+	</dd>
+		
+	<dt><a name="3">Der Anfang.. und jetzt?</a></dt>
+	<dd>Fang klein an! Suche dir ein 220m²-Grundstück (ein Kästchen) für maximal 2000000 &euro; mit vielen Kunden in der <a href="#Umgebung">näheren Umgebung</a></dd>
+	
+	<dt><a name="Umgebung">Wie groß ist denn die nähere Umgebung?</a></dt>
+	<dd>Die "nähere Umgebung" eines Feldes beinhaltet die 12 Flächen, die sich neben dem besagten Feld, wie hier im Bild, befinden:<br><img src="img/nbh.png"></dd>
+
+	<dt><a name="Einrichtung">Wieviele Tische und so sollte man reinstellen?</a></dt>
+	<dd>Da sieht man wieviele Kunden (K*) mit den Tischen und so versorgt werden können.</dd>
+	
+	<dt><a name="Angestellte">Sind schon Angestellte dabei?</a></dt>
+	<dd>Nein, die musst du noch "Einstellen".</dd>
+	
+	<dt><a name="Platz">Kann man nur eine Küche besitzen?</a></dt>
+	<dd>Ja, wenn der Platz nur für eine Küche reicht.</dd>
+	
+	<dt><a name="Typ">Müssen alle Tische vom selben Typ sein ?!</a></dt>
+	<dd>Ja.</dd>
+	
+	<dt><a name="Verkaufen">Ach Mist.</a></dt>
+	<dd>Kannst sie für 75% des Kaufpreises verkaufen. Grundstücke werden zu 90% ihres Kaufwertes verkauft.</dd>
+	
+	<dt><a name="Kunden">Wie wird die Kundenanzahl berechnet?</a></dt>
+	<dd>
+		<b>Parkplätze:</b><br>
+		<i>Kundenanzahl = StraßendichteDerStadt * EinwohnerzahlDerStadt * RestaurantsInDerNähe * StraßenInDerNähe / GrößeDerUmgebung²</i><br>
+		<br>
+		<b>Restaurants:</b><br>
+		<i>Kundenanzahl = EigeneAttraktivität / (Eigene + GegnerischeAttraktivität) * KundenProStadt</i><br>
+		Wenn das Restaurant dessen Kunden gerade berechnet werden voll geworden ist und einige Kunden übrig bleiben,
+		so wird für die gesamte Stadt nochmal berechnet.<br>
+		<br>
+		Bei jeder Berechnung gilt außerdem:<br>
+		<ul>
+			<li>Restaurants ohne freien Platz für Kunden und relativ hoher Attraktivität werden nicht betrachtet</li>
+			<li><i>KundenProStadt</i> beträgt 3*Stadtpopulation (Jeder bewohner geht pro Tick 3 mal essen)</li>
+			<li>Vor der Verrechnung der Restaurants werden schon Kunden vom Parkplatz auf die <i>Kundenanzahl</i> draufgerechnet.
+				Somit hat man mit Parkplätzen einige Kunden bei sich gesichert.<br>
+				(Parkplatzkunden sind von Außerhalb und können die Attraktivitäten nicht vergleichen)
+			</li>
+		</ul>
+	</dd>
+	
+	<dt><a name="Attraktivität">Wie entsteht die Attraktivität eines Restaurants?</a></dt>
+	<dd>
+		( Küche + Tische + Sanitär + AnzahlGrünerFelderInUmgebung ) * ( 9/PreisFürEssen ) * ( 1 + 0.1*stars);
+	</dd>
+	
+	<dt><a name="Kosten">Wie berechnet sich der Kontostand?</a></dt>
+	<dd>
+		<table style="float:right; margin:5px; color:#000; border:1px solid #000;">
+			<tr><th>Konto</th><th>Zinssatz</th></tr>
+			<tr><td>>1500000 &euro;</td><td style="color:#f00;">0,0%</td></tr>
+			<tr><td>>500000 &euro;</td><td>0,01%</td></tr>
+			<tr><td>>50000 &euro;</td><td>0,02%</td></tr>
+			<tr><td>>5000 &euro;</td><td>0,025%</td></tr>
+			<tr><td>>0 &euro;</td><td>0,03%</td></tr>
+		</table>
+		Der Kontostand wird bei jedem Tick so berechnet:<br>
+		<i>NeuerKontostand = (1 + <b>Zinssatz</b>) * AlterKontostand - Energiekosten * 1&euro; + KundenAnzahl * Preis - LohnAllerAngestellten</i><br>
+	</dd>
+	
+	<dt><a name="Tick">Wann gibt es immer einen Tick?</a></dt>
+	<dd>
+		Zzt. alle 2 Stunden, außer ich mach aus technischen Gründen einen oder mehrere Extra-Ticks.
+	</dd>
+		
+	<dt><a name="Logo">Wo krieg ich 'nen Logo her?</a></dt>
+	<dd>
+		Zum Beispiel hier: <a target="_blank" href="http://www.picsearch.de/search.cgi?aui=1&q=restaurant&cols=5&thumbs=20&anim=both&color=both&size=1t50">PicSearch</a> (Auf der verlinkten Seite Rechtsklick &rarr; Grafikadresse kopieren)<br>
+		<div style="background-color:#ffc; border:1px solid #000; float:right; height:60px; width:100px;">Das ist ungefähr so groß.</div>
+		Selbstgemachtes hochladen geht z.B. mit: <a href="http://www.photobucket.com">Photobucket.com</a><br>
+		Dein Bild braucht nicht breiter als 100px zu sein und sollte im Querformat vorliegen.<br>
+	</dd>
+	</dl>
+	
+	<h2><a name="Attacken">Attacken</a></h2>
+	<dl>
+	<dt>Graffiti</dt>
+	<dd>Der Angreifer zahlt 500 &euro; an die Graffiti-Artists. Diese sprühen ihr Werk an das entsprechende Restaurant. Der Inhaber sieht es und entfernt es sofort: das kostet 5000&euro;.</dd>
+	
+	<dt>Kritiker</dt>
+	<dd>Wenn die Gegnerischen Mitarbeiter insgesamt im Mittel eine Zuverlässigkeit geringer als 75% haben (also 3 von 4 Tomaten neben die Pizza geschmissen werden und nicht wegräumen), wird der Laden geschlossen und verkauft - ansonsten gibts Sterne für das attackierte Restaurant</dt>
+	</dl>
+	
+	<h2><a name="Technik">Technik</a></h2>
+	<dl>
+	<dt><a name="Passwort">Kannst du mein Passwort lesen?</a></dt>
+	<dd>
+		Nein. Das wird <a target="_blank" href="http://de.wikipedia.org/wiki/MD5">MD5-verschlüsselt</a> gespeichert.
+	</dd>
+	
+	<dt><a name="Fehler">Habe einen Fehler gefunden, was nun?</a></dt>
+	<dd>Wenn du ihn nicht behalten willst, schick ihn mir erstmal einfach per mail:<br><img src="img/adr.png"></dd>
+	
+	<dt><a name="Adblock">Wie kann ich die Werbung blocken?</a></dt>
+	<dd>
+		Firefox-Addon: <a target="_blank" href="https://addons.mozilla.org/de/firefox/addon/1865">Adblock plus</a><br>
+		Folgendes zur Adblock-Liste hinzufügen: <b>http://www*.kilu.net/extra/*</b>
+	</dd>
+	</dl>
+</div>
+</body>
+</html>

@@ -1,0 +1,456 @@
+body {
+	background-color: #850;
+	background-image:url(img/background.png);
+	background-repeat:repeat-x;
+	color: #feb;
+	font-family:sans-serif;
+	font-size:10pt;
+	text-align:center;
+}
+
+h1, h2, h3 {
+	text-decoration:none;
+}
+h1 {
+	font-size:19pt;
+}
+h2 {
+	font-size:15pt;
+}
+h3 {
+	font-size:13pt;
+}
+a {
+	color: #fb7;
+	text-decoration:none;
+}
+a:hover {
+	color:#320;
+}
+.titleOnly {
+	cursor:help;
+}
+
+.content {
+	top:0px;
+	margin:0 auto;
+	border-collapse:collapse;
+}
+.logo {
+	text-align:center;
+	background-color:#a72;
+}
+.logo img {
+	width:64px;
+	max-height:100px;
+}
+.top {
+	background-color:#a72;
+	padding:0px;
+	border: hidden;
+}
+.top h1{
+	padding-top:25px;
+	padding-left:25px;
+}
+.top a{
+	color: #fb7;
+	background-color:#a72;
+	margin:0px;
+	float:right;
+	padding-right:5px;
+	margin-right:0px;
+	margin-bottom:0px;
+	-moz-border-radius-topleft:55px;
+	-moz-border-radius-topright:55px;
+	border:1px solid #a72;
+	font-size: 8pt;
+}
+.top a.withIconTop{
+	-moz-border-radius-topleft:55px;
+	-moz-border-radius-topright:55px;
+}
+.top a.withIconTop:hover {
+	color: #320;
+	background-color: #b83;
+}
+.top a.withIconTop:focus {
+	color: #320;
+	background-color:#961;
+}
+
+.left {
+	margin-top:0px;
+	padding:5px 5px 5px 0px;
+	vertical-align:top;
+}
+.right {
+	width:512px;
+	overflow:auto;
+	background-color:#850;
+	background-image:url(img/maphead.png);
+	background-repeat:no-repeat;
+	background-position: top center;
+	padding:5px;
+	vertical-align:top;
+}
+.right h2 {
+	text-align:center;
+	margin-top:5;
+	color:#320;
+	background-color:transparent;
+}
+
+
+.info {
+	padding:10px 20px 10px 10px;
+	margin-top:0px;
+	margin-bottom:5px;
+	width:196px;
+	-moz-border-radius:10px;
+	font-size:9pt;
+}
+.info.orange{
+	background-color: #961;
+	border:4px solid #a72;
+}
+.info.orange a{
+	color:#FEB;
+	text-decoration:underline;
+}
+.info.orange a:hover{
+	color:#430;
+	text-decoration:underline;
+}
+.info.blue{
+	background-color: #167;
+	border:4px solid #27a;
+}
+.info.blue a{
+	color:#FEB;
+	text-decoration:underline;
+}
+.info.blue a:hover{
+	color:#034;
+	text-decoration:underline;
+}
+.info.red{
+	background-color: #720;
+	border:4px solid #700;
+}
+.info.red a{
+	color:#FEB;
+	text-decoration:underline;
+}
+.info.red a:hover{
+	color:#400;
+	text-decoration:underline;
+}
+.info.green{
+	background-color: #383;
+	border:4px solid #2a2;
+}
+.info.green a{
+	color:#FEB;
+	text-decoration:underline;
+}
+.info.green a:hover{
+	color:#040;
+	text-decoration:underline;
+}
+.info.yellow, img.logo{
+	background-color: #a80;
+	border:4px solid #da0;
+}
+.info.yellow a{
+	color:#FEB;
+	text-decoration:underline;
+}
+.info.yellow a:hover{
+	color:#440;
+	text-decoration:underline;
+}
+
+.clickable {
+	cursor:pointer;
+}
+
+.overview{
+	margin:0px auto;
+	width:512px;
+	padding-bottom: 5px;
+	overflow:auto;
+	font-size:9pt;
+}
+.overview th{
+	background-color: #542;
+}
+.overview td, .overview th{
+	border-top:1px solid #430;
+	border-left:1px solid #430;
+	border-bottom:1px solid #a72;
+	border-right:1px solid #a72;
+	padding:1px;
+}
+.overview td * {
+	margin:0px auto;
+}
+.overview .number {
+	text-align:right;
+}
+.overview tr{
+	background-color: #332200;
+}
+.overview .mod2 {
+	background-color: #392909;
+}
+.overview tr.selected {
+	background-color: #630;
+	font-weight:bold;
+}
+.overview tr.clickable:hover{	
+	background-color: #431;
+}
+
+.diagram {
+	font-size:9pt;
+}
+.diagram th {
+	background-color:#542;
+}
+.diagram td {
+	background-image:url('img/diagrback.png');
+	background-color:#000;
+}
+.diagram th, .diagram td{
+	border-top:1px solid #430;
+	border-left:1px solid #430;
+	border-bottom:1px solid #a72;
+	border-right:1px solid #a72;
+}
+.diagram .point {
+	padding-top:55px;
+	float:left;
+	font-size:6pt;
+	text-align:center;
+	overflow:hidden;
+	background-image:url('img/whitedot.png');
+	background-repeat:repeat-x;
+	display:inline;
+}
+
+img.logo {
+	border:3px solid #961;
+}
+
+.withIconTop {
+	padding-top: 14px;
+	padding-left: 2px;
+	background-repeat: no-repeat;
+	background-position: center top;
+}
+.withIconLeft {
+	padding-left: 18px;
+	background-repeat: no-repeat;
+	background-position: left center;
+}
+.withIconRight {
+	padding-right: 18px;
+	background-repeat: no-repeat;
+	background-position: right center;
+}
+
+.employee {
+	background-image:url("img/employee.png");
+}
+.world {
+	background-image:url("img/world.png");
+}
+.city {
+	background-image:url("img/sm_city.png");
+}
+.ground {
+	background-image:url("img/ground.png");
+}
+.logout {
+	background-image:url("img/logout.png");
+}
+.config {
+	background-image:url("img/config.png");
+}
+.view {
+	background-image:url("img/view.png");
+}
+.build {
+	background-image:url("img/build.png");
+}
+.buy {
+	background-image:url("img/buy.png");
+}
+.furnish {
+	background-image:url("img/furnish.png");
+}
+.journal {
+	background-image:url("img/journal.png");
+}
+.close {
+	background-image:url("img/close.png");
+}
+.faq {
+	background-image:url("img/goggles.png");
+}
+.blank{
+	background-image:url("img/notice.png");
+}
+.shares{
+	background-image:url("img/card.png");
+}
+
+.citymap, .worldmap {
+	border:1px solid #430;
+	border-collapse: collapse;
+}
+.citymap *, .worldmap * {
+	padding:0px;
+	margin:0px;
+}
+.citymap td, .worldmap td {
+	height: 32px;
+	width: 32px;
+	cursor:pointer;
+	background-repeat:no-repeat;
+	background-position:center center;
+	border:none;
+}
+.citymap td img, .worldmap td img {
+	margin:0px;
+	border:none;
+}
+.citymap th, .worldmap th {
+	text-align:left;
+	padding:5px;
+	color:#320;
+}
+
+/*citymap*/
+.citymap .IG {
+	background-image:url("img/IG.png");
+}
+.citymap .II {
+	background-image:url("img/II.png");
+}
+.citymap .IH {
+	background-image:url("img/IH.png");
+}
+.citymap .IJ {
+	background-image:url("img/IJ.png");
+}
+.citymap .IK {
+	background-image:url("img/IK.png");
+}
+.citymap .IL {
+	background-image:url("img/IL.png");
+}
+.citymap .IM {
+	background-image:url("img/IM.png");
+}
+.citymap .IN {
+	background-image:url("img/IN.png");
+}
+.citymap .IO {
+	background-image:url("img/IO.png");
+}
+.citymap .IP {
+	background-image:url("img/IP.png");
+}
+.citymap .IQ {
+	background-image:url("img/IQ.png");
+}
+.citymap .HG {
+	background-image:url("img/HG.png");
+}
+.citymap .HH {
+	background-image:url("img/HH.png");
+}
+.citymap .HI {
+	background-image:url("img/HI.png");
+}
+.citymap .GG {
+	background-image:url("img/GG.png");
+}
+.citymap .GH {
+	background-image:url("img/GH.png");
+}
+.citymap .GI {
+	background-image:url("img/GI.png");
+}
+.citymap .SG {
+	background-image:url("img/SG.png");
+}
+.citymap .SH {
+	background-image:url("img/SH.png");
+}
+.citymap .SI {
+	background-image:url("img/SI.png");
+}
+
+/*Worldmap*/
+
+.worldmap .IG {
+	background-image:url("img/city.png");
+}
+.worldmap .HG {
+	background-image:url("img/GG.png");
+}
+.worldmap .HH {
+	background-image:url("img/GH.png");
+}
+.worldmap .HI {
+	background-image:url("img/GI.png");
+}
+.worldmap .GG {
+	background-image:url("img/lake.gif");
+}
+.worldmap .GH {
+	background-image:url("img/GH.png");
+}
+.worldmap .GI {
+	background-image:url("img/GI.png");
+}
+.worldmap .SG {
+	background-image:url("img/SG.png");
+}
+.worldmap .SH {
+	background-image:url("img/SH.png");
+}
+.worldmap .SI {
+	background-image:url("img/SI.png");
+}
+
+.notice {
+	text-align:left;
+	background-color: #ffc;
+	background-position:right center;
+	background-repeat:no-repeat;
+	border:1px solid #aa6;
+	padding-left:8px;
+	padding-bottom:1px;
+	padding-top:1px;
+	padding-right:18px;
+	position:absolute;
+	visibility:hidden;
+	z-index:5;
+	top:0px;
+	left:0px;
+	color:#000;
+	cursor:pointer;
+	-moz-border-radius-bottomleft:10px;
+	-moz-border-radius-bottomright:10px;
+}
+.notice a{
+	color:#000;
+	text-decoration:none;
+}
+.notice a:hover{
+	color:#000;
+}
