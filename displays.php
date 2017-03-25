@@ -21,7 +21,7 @@ function drawMapInGame($worldid,$city,$playerid) {
 		echo "<tr>\n";
 		for ($x = 0; $x < $width; $x++) {
 			echo "<td onClick=\"javascript:info(".$x.",".$y.")\"";
-			//abfragen, ob keines,  oder gegnerisches grundstück
+			//abfragen, ob keines,  oder gegnerisches grundstÃ¼ck
 			$ground = getGround($worldid,$city,$map[$x][$y]);
 			if(hexdec($map[$x][$y])>0) {
 				if(!thisIsCityMap() && $cty = getCity($worldid,$map[$x][$y]))
@@ -77,7 +77,7 @@ function drawMapInGame($worldid,$city,$playerid) {
 			}
 			echo " class=\"".$class."\"";
 			if($class=="IG")
-				echo " title=\"".number_format($ground["area"],0,","," ")." m²: ".number_format($ground["price"],2,","," ")." &euro;\"";
+				echo " title=\"".number_format($ground["area"],0,","," ")." mÂ²: ".number_format($ground["price"],2,","," ")." &euro;\"";
 			echo ">";
 
 			if(isset($_GET["x"]) && isset($_GET["y"])) //Auswahl darstellen
@@ -108,14 +108,14 @@ function drawTransfer() {
 		if($plr = $r_plr->fetch_array(MYSQLI_ASSOC)) {
 			$db->query("UPDATE player SET konto=konto+".$_POST["transferMoney"].", ingo=ingo-".$_POST["transferMoney"]." WHERE id=".$_POST["transferTo"]);
 			$db->query("UPDATE player SET konto=konto-".$_POST["transferMoney"].", outgo=outgo+".$_POST["transferMoney"]." WHERE id=".$_SESSION["id"]);
-			secondNoticeBar(number_format($_POST["transferMoney"],2,","," ")." &euro; an ".$plr["name"]." überwiesen.");
-			sendMessage(0,$_POST["transferTo"],"Überweisung","$name überwies dir ".number_format($_POST["transferMoney"],2,","," ")." &euro;.",3);
+			secondNoticeBar(number_format($_POST["transferMoney"],2,","," ")." &euro; an ".$plr["name"]." Ã¼berwiesen.");
+			sendMessage(0,$_POST["transferTo"],"Ãœberweisung","$name Ã¼berwies dir ".number_format($_POST["transferMoney"],2,","," ")." &euro;.",3);
 			$plr = getPlayer($_SESSION["id"]);
 			drawNewGuthaben(number_format($plr["konto"],2,",",""));
 		}
 	}
 	echo "<table class=\"overview\">
-	          <tr><th>Überweisung</th></tr>";
+	          <tr><th>Ãœberweisung</th></tr>";
 	echo "<tr><td><form action=\"\" method=\"POST\">
 		<input type=\"text\" size=\"13\" name=\"transferMoney\" value=\"0\"> &euro an
 		<select name=\"transferTo\">";
@@ -124,7 +124,7 @@ function drawTransfer() {
 		echo "			<option value=\"".$plr["id"]."\">".$plr["name"]."</option>";
 	}
 	echo "		</select>
-		<input type=\"submit\" value=\"Überweisen\">\n\t</form></td></tr></table>";
+		<input type=\"submit\" value=\"Ãœberweisen\">\n\t</form></td></tr></table>";
 	$db->Close();
 }
 
@@ -151,7 +151,7 @@ function drawShare($ownshare,$sell) {
 				".number_format($ownshare["value"],2,","," ")." &euro;
 			</td>
 		</tr><tr>
-			<td class=\"number titleOnly\" title=\"Wertänderung seit dem letzten Tick\">";
+			<td class=\"number titleOnly\" title=\"WertÃ¤nderung seit dem letzten Tick\">";
 	drawFinancialTendency($ownshare["company"]);
 	echo "<div style=\" text-align:center; color:".(($ia>0) ? "#4d4\">+".$ia : "#d44\">".$ia);
 
@@ -163,7 +163,7 @@ function drawShare($ownshare,$sell) {
 		if($maxvalue>$ownshare["count"])
 			$maxvalue = $ownshare["count"];
 	}
-	echo "</td><td class=\"number titleOnly\" title=\"Stückpreis\">
+	echo "</td><td class=\"number titleOnly\" title=\"StÃ¼ckpreis\">
 				".number_format($ag["ia"]/$count[0],2,","," ")." &euro;
 			</td><td>
 				<form id=\"".(($sell) ? "sell" : "buy").$ag["id"]."\" method=\"POST\" action=\"\" style=\"margin:0px auto;\">
@@ -218,11 +218,11 @@ function sharesCenter($worldid) {
 	if($count[0]==0) {
 		echo "<br><table class=\"overview\">
 		<tr>
-			<th>Börsengang</th>
+			<th>BÃ¶rsengang</th>
 		</tr><tr>
 			<td>
 					<form method=\"POST\" action=\"\">
-						Anzahl Aktien: <input title=\"Empfohlen: ".ceil($plr["ia"]/5000)." Stück zu je 5000&euro;\" type=\"text\" size=\"15\" name=\"bgang\" value=\"".ceil($plr["ia"]/5000)."\"> Stück &rArr;
+						Anzahl Aktien: <input title=\"Empfohlen: ".ceil($plr["ia"]/5000)." StÃ¼ck zu je 5000&euro;\" type=\"text\" size=\"15\" name=\"bgang\" value=\"".ceil($plr["ia"]/5000)."\"> StÃ¼ck &rArr;
 						<input type=\"submit\" size=\"15\" value=\"AG werden\"></p>
 					</form>
 			</td>
@@ -268,17 +268,17 @@ function messageCenter($playerid) {
 				case 3:
 					$query = "DELETE FROM messages WHERE id=".$msg["id"];
 					$db->query($query) or die("Error during messages delete: ".$query);
-					echo "Nachricht ".$msg["id"]." gelöscht.";
+					echo "Nachricht ".$msg["id"]." gelÃ¶scht.";
 					break;
 				case 4:
 					$query = "DELETE FROM messages WHERE toid=".$msg["toid"]." AND state=".$msg["state"];
 					$db->query($query) or die("Error during message delete: ".$query);
-					echo "Alle Nachrichten vom Typ ".$msg["state"]." gelöscht.";
+					echo "Alle Nachrichten vom Typ ".$msg["state"]." gelÃ¶scht.";
 					break;
 				case 5:
 					$query = "DELETE FROM messages WHERE toid=".$msg["toid"]." AND state=".$msg["state"]." AND title='".$msg["title"]."'";
 					$db->query($query) or die("Error during message delete: ".$query);
-					echo "Alle gelesenen Nachrichten mit Betreff \"".$msg["title"]."\" gelöscht.";
+					echo "Alle gelesenen Nachrichten mit Betreff \"".$msg["title"]."\" gelÃ¶scht.";
 					break;
 			}
 		}
@@ -347,10 +347,10 @@ function messageCenter($playerid) {
 		echo "<select name=\"do".$msg["id"]."\">";
 		echo "<option>Nachricht..</option>";
 		echo "<option class=\"clickable\" value=\"2\">..beantworten</option>";
-		echo "<option class=\"clickable\" value=\"3\">..löschen</option>";
+		echo "<option class=\"clickable\" value=\"3\">..lÃ¶schen</option>";
 		if($_GET["view"]==1 || !isset($_GET["view"])) {
-			echo "<option class=\"clickable\" value=\"4\">..Typ löschen</option>";
-			echo "<option class=\"clickable\" value=\"5\">..mit diesem Betreff löschen</option>";
+			echo "<option class=\"clickable\" value=\"4\">..Typ lÃ¶schen</option>";
+			echo "<option class=\"clickable\" value=\"5\">..mit diesem Betreff lÃ¶schen</option>";
 		}
 		echo "</select>";
 		echo "</form>";
@@ -409,7 +409,7 @@ function overview($who,$worldid) {
 				<th>Logo</th>
 				<th>Restaurant</th>
 				<th>Inhaber</th>
-				<th class=\"titleOnly\" title=\"Städte mit 80% der Kunden\">S</th>
+				<th class=\"titleOnly\" title=\"StÃ¤dte mit 80% der Kunden\">S</th>
 				<th class=\"titleOnly\" title=\"Kunden\">K</th>
 				<th class=\"titleOnly\" title=\"Kurs (Investment Approach)\">IA</th>
 				<th class=\"titleOnly\" title=\"An- /Abwesend seit..\">on</th>
@@ -514,16 +514,16 @@ function overview($who,$worldid) {
 				echo "\n\t<option onClick=\"document.getElementById('filter').submit();\" ".(($state==$_POST["state"]) ? "selected " : "")."value=\"$state\">";
 				switch($state) {
 					case 1:
-						echo "Grundstücke";
+						echo "GrundstÃ¼cke";
 						break;
 					case 2:
 						echo "Restaurants";
 						break;
 					case 3:
-						echo "Parkplätze";
+						echo "ParkplÃ¤tze";
 						break;
 					case 4:
-						echo "Grünanlagen";
+						echo "GrÃ¼nanlagen";
 						break;
 					case 5:
 						echo "kl. Wohnhaus";
@@ -685,7 +685,7 @@ function furnish($worldid,$city,$hex,$what,$playerid) {
 			echo "\t\t</td><td>".($gnd["tablesnum"]*$fxt["personal"])."</td>\n\t</tr>\n";
 		} else $cust=0;
 		if($gnd["kitchensnum"]>0) {
-			echo "\t<tr class=\"clickable\" onClick=\"window.location.href='game.php?city=".$gnd["city"]."&x=".$gnd["x"]."&y=".$gnd["y"]."&furnish=$hex&sellfixture=".$gnd["kitchensid"]."&what=".$gnd["what"]."'\">\n\t\t<td>Küchen</td>\n";
+			echo "\t<tr class=\"clickable\" onClick=\"window.location.href='game.php?city=".$gnd["city"]."&x=".$gnd["x"]."&y=".$gnd["y"]."&furnish=$hex&sellfixture=".$gnd["kitchensid"]."&what=".$gnd["what"]."'\">\n\t\t<td>KÃ¼chen</td>\n";
 			$fxt = getFixture($gnd["kitchensid"]);
 			echo "\t\t<td style=\"text-align:right\">".$gnd["kitchensnum"]."</td><td>".$fxt["name"]."</td>\n";
 			echo "\t\t<td style=\"text-align:right\">".($gnd["kitchensnum"]*$fxt["max_customers"])."</td>\n";
@@ -695,7 +695,7 @@ function furnish($worldid,$city,$hex,$what,$playerid) {
 			echo "\t\t</td><td>".($gnd["kitchensnum"]*$fxt["personal"])."</td>\n\t</tr>\n";
 		}else $cust=0;
 		if($gnd["toiletsnum"]>0) {
-			echo "\t<tr class=\"clickable\" onClick=\"window.location.href='game.php?city=".$gnd["city"]."&x=".$gnd["x"]."&y=".$gnd["y"]."&furnish=$hex&sellfixture=".$gnd["toiletsid"]."&what=".$gnd["what"]."'\">\n\t\t<td>Sanitäranlagen</td>\n";
+			echo "\t<tr class=\"clickable\" onClick=\"window.location.href='game.php?city=".$gnd["city"]."&x=".$gnd["x"]."&y=".$gnd["y"]."&furnish=$hex&sellfixture=".$gnd["toiletsid"]."&what=".$gnd["what"]."'\">\n\t\t<td>SanitÃ¤ranlagen</td>\n";
 			$fxt = getFixture($gnd["toiletsid"]);
 			echo "\t\t<td style=\"text-align:right\">".$gnd["toiletsnum"]."</td><td>".$fxt["name"]."</td>\n";
 			echo "\t\t<td style=\"text-align:right\">".($gnd["toiletsnum"]*$fxt["max_customers"])."</td>\n";
@@ -706,7 +706,7 @@ function furnish($worldid,$city,$hex,$what,$playerid) {
 		} else $cust=0;
 		echo "</table>";
 
-		echo getRemainingSpaceOnGround($worldid,$city,$hex)."m² an Platz sind noch frei. Maximal sind ".getMaxCustOfGround($gnd)." Kunden bedienbar<br>";
+		echo getRemainingSpaceOnGround($worldid,$city,$hex)."mÂ² an Platz sind noch frei. Maximal sind ".getMaxCustOfGround($gnd)." Kunden bedienbar<br>";
 
 		echo "<table class=\"overview\"><tr><th colspan=\"8\">Kaufen</th></tr><tr>\n";
 		echo "<th>Name</th>";
@@ -729,13 +729,13 @@ function furnish($worldid,$city,$hex,$what,$playerid) {
 					$bez.="Tisch";
 					break;
 				case 2:
-					$bez.="Küche";
+					$bez.="KÃ¼che";
 					break;
 				case 3:
-					$bez.="Sanitär";
+					$bez.="SanitÃ¤r";
 					break;
 				default:
-					$bez.="Mysteriös";
+					$bez.="MysteriÃ¶s";
 			}
 			echo "\t\t<option ".(($class == $what) ? "selected" : "")." onClick=\"window.location.href='game.php?city=$city&x=".$_GET["x"]."&y=".$_GET["y"]."&furnish=$hex&x=".$_GET["x"]."&y=".$_GET["y"]."&what=$class'\">$bez</option>\n";
 		}
@@ -744,11 +744,11 @@ function furnish($worldid,$city,$hex,$what,$playerid) {
 		echo "</form>\n";
 		echo "</th>";
 		echo "<th>Preis</th>";
-		echo "<th title=\"Platzbedarf\">m²*</th>";
+		echo "<th title=\"Platzbedarf\">mÂ²*</th>";
 		echo "<th title=\"Bedienbare Kunden\">K*</th>";
-		echo "<th title=\"Benötigtes Personal\">P*</th>";
+		echo "<th title=\"BenÃ¶tigtes Personal\">P*</th>";
 		echo "<th title=\"Energiekosten\">E*</th>";
-		echo "<th title=\"Attraktivität\">A*</th></tr>";
+		echo "<th title=\"AttraktivitÃ¤t\">A*</th></tr>";
 
 		$result = $db->query("SELECT * FROM fixtures WHERE class='$what'") or die("error loading fixtures #1");
 
@@ -761,13 +761,13 @@ function furnish($worldid,$city,$hex,$what,$playerid) {
 					$bez.="Tisch";
 					break;
 				case 2:
-					$bez.="Küche";
+					$bez.="KÃ¼che";
 					break;
 				case 3:
-					$bez.="Sanitär";
+					$bez.="SanitÃ¤r";
 					break;
 				default:
-					$bez.="Mysteriös";
+					$bez.="MysteriÃ¶s";
 			}
 			echo "\t\t<td>".$bez."</td>\n";
 			echo "\t\t<td style=\"text-align:right\">".number_format($fxt["price"],2,",","")."&euro;</td>\n";
@@ -779,7 +779,7 @@ function furnish($worldid,$city,$hex,$what,$playerid) {
 			echo " \t</tr>\n";
 		}
 		echo "</table>\n";
-		echo "<p style=\"font-size:8pt; text-align:center;\">*) m²= Platzbedarf, K=Bedienbare Kunden, P=Benötigtes Personal, E=Energiekosten, A=Attraktivität</p>";
+		echo "<p style=\"font-size:8pt; text-align:center;\">*) mÂ²= Platzbedarf, K=Bedienbare Kunden, P=BenÃ¶tigtes Personal, E=Energiekosten, A=AttraktivitÃ¤t</p>";
 	$db->Close();
 	}
 }
@@ -794,7 +794,7 @@ function personel($worldid,$city,$hex,$hire,$playerid,$what) {
 		$db = makeConn();
 		switch($_GET["what"]) {
 			case 1: $bez="Kellner"; break;
-			case 2: $bez="Köche"; break;
+			case 2: $bez="KÃ¶che"; break;
 			case 0: $bez="Cleaner"; break;
 		}
 
@@ -805,8 +805,8 @@ function personel($worldid,$city,$hex,$hire,$playerid,$what) {
 		<tr>
 			<th>Job</th>
 			<th>Name</th>
-			<th title\"Tüchtigkeit bzw. effektives Personal\">P*</th>
-			<th title=\"Zuverlässigkeit\">Z*</th>
+			<th title\"TÃ¼chtigkeit bzw. effektives Personal\">P*</th>
+			<th title=\"ZuverlÃ¤ssigkeit\">Z*</th>
 			<th>Lohn</th>\n
 		</tr>
 		<tr>\n";
@@ -857,7 +857,7 @@ function personel($worldid,$city,$hex,$hire,$playerid,$what) {
 
 		echo "<table class=\"overview\">\n\t<tr>\n";
 		echo "\t\t<th>Typ</th>\n";
-		echo "\t\t<th>Benötigtes Personal</th>\n";
+		echo "\t\t<th>BenÃ¶tigtes Personal</th>\n";
 		echo "\t</tr>\n";
 		$fxtids = array("toilet","table","kitchen");
 		for($i=0;$i<count($fxtids);$i++) {
@@ -870,7 +870,7 @@ function personel($worldid,$city,$hex,$hire,$playerid,$what) {
 					echo "Kellner";
 					break;
 				case 2:
-					echo "Köche";
+					echo "KÃ¶che";
 					break;
 			}
 			echo "</td>\n";
@@ -896,8 +896,8 @@ function personel($worldid,$city,$hex,$hire,$playerid,$what) {
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<th>Name</th>\n";
-		echo "\t\t<th title=\"Tüchtigkeit bzw effektives Personal\">P*</th>\n";
-		echo "\t\t<th title=\"Zuverlässigkeit\">Z*</th>\n";
+		echo "\t\t<th title=\"TÃ¼chtigkeit bzw effektives Personal\">P*</th>\n";
+		echo "\t\t<th title=\"ZuverlÃ¤ssigkeit\">Z*</th>\n";
 		echo "\t\t<th>Lohn</th>\n";
 		echo "\t\t<th>&rArr;P<sub>eff</sub></th>\n";
 		echo "\t</tr>\n";
@@ -938,7 +938,7 @@ $db = makeConn();
 	$imax = count($ias);
 	if($imax > 1) {
 		$average = array_sum($ias)/count($ias);
-		echo "<table class=\"diagram\"><tr><th>Börsenwert \"".$plr["kette"]."\"</th></tr>\n";
+		echo "<table class=\"diagram\"><tr><th>BÃ¶rsenwert \"".$plr["kette"]."\"</th></tr>\n";
 		echo "\t<tr><td>";
 		for($i=$imax-2; $i>=0; $i--) {
 			echo "<div class=\"titleOnly point\"
@@ -1057,7 +1057,7 @@ function drawBilance($playerid) {
 }
 
 function drawPrice4FoodMenu($gnd) {
-	echo "<select title=\"Preis auswählen\">\n\t\n";
+	echo "<select title=\"Preis auswÃ¤hlen\">\n\t\n";
 	for($i=1; $i<6; $i++) {
 		echo "<option";
 		if($gnd["price4food"]==$i) {
@@ -1075,10 +1075,10 @@ function drawKickSomeAssMenu($worldid,$city,$hex) {
 	echo "<select>\n";
 	echo "\t<option selected>--Bel&auml;stigen--</option>\n";
 	echo "\t<option onClick=\"window.location.href='game.php?city=".$_GET["city"]."&kicksome=$hex&x=".$_GET["x"]."&y=".$_GET["y"]."&what=1'\">Grafitti (500&euro;,5KE)</option>\n";
-	echo "\t<option onClick=\"window.location.href='game.php?city=".$_GET["city"]."&kicksome=$hex&x=".$_GET["x"]."&y=".$_GET["y"]."&what=2'\">Gerücht (10KE)</option>\n";
+	echo "\t<option onClick=\"window.location.href='game.php?city=".$_GET["city"]."&kicksome=$hex&x=".$_GET["x"]."&y=".$_GET["y"]."&what=2'\">GerÃ¼cht (10KE)</option>\n";
 	echo "\t<option onClick=\"window.location.href='game.php?city=".$_GET["city"]."&kicksome=$hex&x=".$_GET["x"]."&y=".$_GET["y"]."&what=5'\">Hygiene&Kritiker (20KE)</option>\n";
 	echo "\t</select><br>\n";
-	echo "<a href=\"http://psprince2.ps.funpic.de/forum/index.php?topic=46.0\" target=\"_blank\"><u>Diskutiere im Forum</u></a> über Attacken, die eingeführt werden sollten!";
+	echo "<a href=\"http://psprince2.ps.funpic.de/forum/index.php?topic=46.0\" target=\"_blank\"><u>Diskutiere im Forum</u></a> Ã¼ber Attacken, die eingefÃ¼hrt werden sollten!";
 }
 
 function drawFinancialTendency($playerid) {
@@ -1114,11 +1114,11 @@ function drawIAMarquee($worldid) {
 
 function drawTipp() {
 	$tipps = array(
-		"Falls du Fragen über den Spielablauf oder andere Fragen hast, schau zuerst im FAQ nach, ob deine Frage bereits beantwortet wurde. Wenn nicht, kannst du selber eine Frage stellen! Jeder Spieler kann Antworten schreiben. Der Admin kann diese Editieren.",
-		"Um auf den Aktuellen Stand der diskutierten Spieländerungen zu bleiben, oder selbst Änderungen vorzuschlagen: Geht ins <a class=\"withIconLeft blank\" href=\"http://psprince2.ps.funpic.de/forum/index.php\" target=\"_blank\">Forum</a>!",
+		"Falls du Fragen Ã¼ber den Spielablauf oder andere Fragen hast, schau zuerst im FAQ nach, ob deine Frage bereits beantwortet wurde. Wenn nicht, kannst du selber eine Frage stellen! Jeder Spieler kann Antworten schreiben. Der Admin kann diese Editieren.",
+		"Um auf den Aktuellen Stand der diskutierten SpielÃ¤nderungen zu bleiben, oder selbst Ã„nderungen vorzuschlagen: Geht ins <a class=\"withIconLeft blank\" href=\"http://psprince2.ps.funpic.de/forum/index.php\" target=\"_blank\">Forum</a>!",
 		"Fang klein an! Hilfe findest du in der <a href=\"faq/faq.php\" target=\"_blank\">FAQ</a>",
 		"Wenn du zu wenig Geld hast: Versuche Aktien zu verkaufen!",
-		"Jede Runde bekommst du 1 KE bis du 35 KE hast. Manchmal kannst du aber auch im Glücksspiel 5 KE auf einmal gewinnen!"
+		"Jede Runde bekommst du 1 KE bis du 35 KE hast. Manchmal kannst du aber auch im GlÃ¼cksspiel 5 KE auf einmal gewinnen!"
 	);
 	$plr = getPlayer($_SESSION["id"]);
 	if($plr["ingo"]==0)
@@ -1195,8 +1195,8 @@ function drawLose() {
 					default:
 						secondNoticeBar("Niete!");
 				}
-			} else alert("Glücksspiele sind verboten! Nicht genug Kriminelle Energie!");
-		} else alert("Nicht genug Geld um ein Los kaufen zu können!");
+			} else alert("GlÃ¼cksspiele sind verboten! Nicht genug Kriminelle Energie!");
+		} else alert("Nicht genug Geld um ein Los kaufen zu kÃ¶nnen!");
 	}
 	$plr = getPlayer($_SESSION["id"]);
 	drawNewGuthaben($plr["konto"]);
@@ -1204,7 +1204,7 @@ function drawLose() {
 	$r_jp = $db->query("SELECT jackpot FROM lose");
 	if($jp = $r_jp->fetch_array(MYSQLI_NUM)) {
 		if($plr["deeds"]>=1) {
-			echo "Verbotenes Glücksspiel:<br>Jeder 7te kann gewinnen!<br>Jackpot: <b>".number_format($jp[0],0,","," ")."&euro;</b>!<br>
+			echo "Verbotenes GlÃ¼cksspiel:<br>Jeder 7te kann gewinnen!<br>Jackpot: <b>".number_format($jp[0],0,","," ")."&euro;</b>!<br>
 					<a href=\"game.php?los\" class=\"withIconLeft buy\" target=\"_top\">Ein Los kaufen</a> (5000&euro;, 1KE)";
 		} else echo "Jackpot: ".number_format($jp[0],0,","," ")."&euro;!";
 	}
@@ -1271,7 +1271,7 @@ function drawHighscore() {
 		echo "<th>Mieter</th><td>".$plr["name"]."</td><td>".number_format($hs["mieter"],0,","," ")."</td></tr><tr".(($mod2%2==0) ? " class=\"mod2\"" : "").">";
 
 		$plr = getPlayer($hs["carparksid"]);
-		echo "<th>Parkplätze</th><td>".$plr["name"]."</td><td>".number_format($hs["carparks"],0,","," ")."</td></tr><tr".(($mod2%2==0) ? " class=\"mod2\"" : "").">";
+		echo "<th>ParkplÃ¤tze</th><td>".$plr["name"]."</td><td>".number_format($hs["carparks"],0,","," ")."</td></tr><tr".(($mod2%2==0) ? " class=\"mod2\"" : "").">";
 
 		$plr = getPlayer($hs["restaurantsid"]);
 		echo "<th>Filialen</th><td>".$plr["name"]."</td><td>".number_format($hs["restaurants"],0,","," ")."</td></tr><tr".(($mod2%2==0) ? " class=\"mod2\"" : "").">";
@@ -1284,7 +1284,7 @@ function drawHighscore() {
 		echo " (".round($hs["attr"]).")</td></tr><tr".(($mod2%2==0) ? " class=\"mod2\"" : "").">";
 
 		$plr = getPlayer($hs["paysid"]);
-		echo "<th>Löhne</th><td>".$plr["name"]."</td><td>".number_format($hs["pays"],2,","," ")."&euro;</td></tr>";
+		echo "<th>LÃ¶hne</th><td>".$plr["name"]."</td><td>".number_format($hs["pays"],2,","," ")."&euro;</td></tr>";
 		$mod2++;
 	}
 	echo "      </table>";
@@ -1339,10 +1339,10 @@ function drawRVMenu() {
 			$db->query($query);
 			switch($_POST["RVrestart"]) {
 				case 0:
-					secondNoticeBar("Du wählst: das Spiel weiter spielen.");
+					secondNoticeBar("Du wÃ¤hlst: das Spiel weiter spielen.");
 					break;
 				case 1:
-					secondNoticeBar("Du wählst: das Spiel neustarten.");
+					secondNoticeBar("Du wÃ¤hlst: das Spiel neustarten.");
 					break;
 			}
 		}
@@ -1354,10 +1354,10 @@ function drawRVMenu() {
 				Spiel neustarten?<br>
 				<select name=\"RVrestart\" onChange=\"document.getElementById('RVsubmit').disabled=false\">
 					<option ".(($rst[0]==1) ? "selected " : "")."value=\"1\" class=\"withIconLeft logout\">Ja, neustarten</option>
-					<option ".(($rst[0]==0) ? "selected " : "")."value=\"0\" class=\"withIconLeft blank\">Nö, weiter gehts</option>
+					<option ".(($rst[0]==0) ? "selected " : "")."value=\"0\" class=\"withIconLeft blank\">NÃ¶, weiter gehts</option>
 				</select>
 				<input disabled=\"true\" type=\"submit\" id=\"RVsubmit\" value=\"Ok\"><br>
-				Das wäre nach ".$timespan." Tagen Spielzeit. ";
+				Das wÃ¤re nach ".$timespan." Tagen Spielzeit. ";
 
 		$votes4restart = 0;
 		$votes4NOrestart = 0;
@@ -1368,7 +1368,7 @@ function drawRVMenu() {
 		$r_bestplr = $db->query("SELECT * FROM player WHERE 1 ORDER BY ia DESC");
 		$bestplr = $r_bestplr->fetch_array(MYSQLI_ASSOC);
 		while($plr = $r_plr->fetch_array(MYSQLI_ASSOC)) {
-			if($plr["id"]!=$bestplr["id"]) { // stärksten Spieler auslassen
+			if($plr["id"]!=$bestplr["id"]) { // stÃ¤rksten Spieler auslassen
 				if($plr["RVvote"]>0)
 					$votes4restart += abs($plr["ia"]);
 				else
@@ -1377,7 +1377,7 @@ function drawRVMenu() {
 		}
 		echo "Den Restart wollen bis jetzt ".number_format(100*$votes4restart/($votes4restart+$votes4NOrestart),2,",","")."%.</form>";
 		if($votes4restart>$votes4NOrestart)
-			echo "Das heißt, beim nächsten Tick passiert ein Restart!<br>";
+			echo "Das heiÃŸt, beim nÃ¤chsten Tick passiert ein Restart!<br>";
 	}
 	$db->Close();
 }

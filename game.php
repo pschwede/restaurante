@@ -98,7 +98,7 @@ function formatZahl(zahl, k, fix)
 	zahl = '' + parseInt( zahl * f + (.5 * (zahl > 0 ? 1 : -1)) ) / f ;
 	// Komma ermittlen
 	var idx = zahl.indexOf('.');
-	// fehlende Nullen einfügen
+	// fehlende Nullen einfÃ¼gen
 	if(fix)
 	{
 		 zahl += (idx == -1 ? '.' : '' )
@@ -196,7 +196,7 @@ if(isset($_GET["pdthghscr"]) && $_SESSION["id"]==1) {
 $player = getPlayer($_SESSION["id"]); //muss _nach_ den results geladen werden
 
 if(isset($_GET["nologout"])) {
-	echo "<b>Das nächste mal bitte mit \"</b><a class=\"withIconLeft logout\">Logout</a><b>\" das Spiel verlassen!</b>";
+	echo "<b>Das nÃ¤chste mal bitte mit \"</b><a class=\"withIconLeft logout\">Logout</a><b>\" das Spiel verlassen!</b>";
 }
 
 if(isset($_GET["x"]) && isset($_GET["y"])) {
@@ -229,7 +229,7 @@ if(thisIsCityMap())
 					<a href="config.php" target="_top" class="withIconTop config">Profil</a>
 					<a href="game.php?messenger" target="_top" class="withIconTop shares">Post</a>
 					<a href="game.php?wallstreet" target="_top" class="withIconTop buy">Bank</a>
-					<a href="game.php?ov=0" target="_top" class="withIconTop view">Überblick</a>
+					<a href="game.php?ov=0" target="_top" class="withIconTop view">Ãœberblick</a>
 					<a href="game.php" target="_top" class="withIconTop world">Karte</a>
 				</td>
 			</tr><tr>
@@ -251,13 +251,13 @@ if(thisIsCityMap())
 							if (thisIsCityMap() && !isset($_GET["ov"]) && !isset($_GET["furnish"])) {
 								echo $city["name"];
 							} elseif(isset($_GET["ov"])) {
-								echo "Überblick";
+								echo "Ãœberblick";
 							} elseif(isset($_GET["furnish"])) {
 								echo "Ausstatter";
 							} elseif(isset($_GET["messenger"])) {
 								echo "Nachrichten";
 							} elseif(isset($_GET["wallstreet"])) {
-								echo "Börse";
+								echo "BÃ¶rse";
 							} elseif(isset($_GET["highscore"])) {
 								echo "&#x2605; Highscore &#x2605;";
 							} else {

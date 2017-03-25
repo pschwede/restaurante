@@ -7,10 +7,11 @@
 <html>
 <head>
 <meta name="keywords" content="mmog, game, browser, browsergame, browser game, spiel, multiplayer, online, restaurant, simulation, markt" />
-<meta name="description" content="Restaurante - Die anderen haben widerlicheren Fraß als du!" />
+<meta name="description" content="Restaurante - Die anderen haben widerlicheren FraÃŸ als du!" />
 <meta name="author" content="P. Schwede" />
 <meta name="revisit-after" content="2 days" />
 <meta name="copyright" content="Copyright (GPL) of P. Schwede &amp; S. Schubert, some rights reserved" />
+<meta name="encoding" charset="UTF-8"/>
 <meta name="robots" content="FOLLOW,INDEX" />
 <title>Restaurante (Beta)</title>
 </head>
@@ -100,7 +101,7 @@ span {
 		</td>
 	</tr><tr>
 		<td class="main">
-			<div id="login">Du musst für dieses <a href="faq/">Spiel</a> Javascript aktiviert haben!</div>
+			<div id="login">Du musst fÃ¼r dieses <a href="faq/">Spiel</a> Javascript aktiviert haben!</div>
 		</td>
 	</tr><tr><td>
 
@@ -114,56 +115,56 @@ if(!table_exists("player")) {
 	echo "Spielertabelle wird erstellt..<br>";
 	createPlayerTableSQL();
 } else {
-	/*echo "Spieler werden zurück gesetzt..<br>";
+	/*echo "Spieler werden zurÃ¼ck gesetzt..<br>";
 	resetPlayerTable();*/
 }
 if(!table_exists("grounds")) {
-	echo "Grundstückstabelle wird erstellt..<br>";
+	echo "GrundstÃ¼ckstabelle wird erstellt..<br>";
 	createGroundsTableSQL($worldid);
 }
 if(!table_exists("fixtures")) {
 	echo "Einrichtungstabelle wird erstellt..<br>";
 	createFixturesTableSQL($worldid);
 }
-if (!table_exists("world")) { //braucht spielertabelle und grundstückstabelle
+if (!table_exists("world")) { //braucht spielertabelle und grundstÃ¼ckstabelle
 	echo "Welt wird geschaffen..<br>";
 	$worldmap = makemap(16,16,0.40);
 	createWorldSQL($worldmap,0);
 	echo "..fertig nach weniger als 7 Tagen!<br>";
 
-	echo "Städte werden gebaut..<br>";
+	echo "StÃ¤dte werden gebaut..<br>";
 	createCitiesSQL($worldmap,$worldid);
 }
 if(!table_exists("hiredpersonel")) {
-	echo "Tabelle für Angestellte wird erstellt..<br>";
+	echo "Tabelle fÃ¼r Angestellte wird erstellt..<br>";
 	createHiredPersonelTableSQL($worldid);
 }
 if(!table_exists("choosablepersonel")) {
-	echo "Tabelle für einstellbare Angestellte wird erstellt..<br>";
+	echo "Tabelle fÃ¼r einstellbare Angestellte wird erstellt..<br>";
 	createChoosablePersonelTableSQL($worldid);
 }
 if(!table_exists("statements")) {
-	echo "Tabelle für Bankstatistik wird erstellt..<br>";
+	echo "Tabelle fÃ¼r Bankstatistik wird erstellt..<br>";
 	createStatementsTableSQL();
 }
 if(!table_exists("messages")) {
-	echo "Tabelle für einstellbare Angestellte wird erstellt..<br>";
+	echo "Tabelle fÃ¼r einstellbare Angestellte wird erstellt..<br>";
 	createMessagesTableSQL();
 }
 if(!table_exists("shares")) {
-	echo "Tabelle für Aktien wird erstellt..<br>";
+	echo "Tabelle fÃ¼r Aktien wird erstellt..<br>";
 	createSharesTableSQL($worldid);
 }
 if(!table_exists("lose")) {
-	echo "Tabelle für Lose wird erstellt..<br>";
+	echo "Tabelle fÃ¼r Lose wird erstellt..<br>";
 	createLoseTableSQL($worldid);
 }
 if(!table_exists("highscore")) {
-	echo "Tabelle für Highscore wird erstellt..<br>";
+	echo "Tabelle fÃ¼r Highscore wird erstellt..<br>";
 	createHighscoreTableSQL($worldid);
 }
 if(!table_exists("highscore2")) {
-	echo "Tabelle für Highscore2 wird erstellt..<br>";
+	echo "Tabelle fÃ¼r Highscore2 wird erstellt..<br>";
 	createHighscore2TableSQL($worldid);
 }
 echo "..fertig.<br>";

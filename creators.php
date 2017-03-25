@@ -54,7 +54,7 @@ function createPlayerTableSQL() {
 function resetPlayerTable() {
 	$db = makeConn();
 	$query = "UPDATE player SET konto=1500000, ia=0, ingo=0, outgo=0, others=0, zinsen=0, deeds=0, pays=0, customers=null WHERE 1";
-	$db->query($query) or die("Spielertabelle konnte nicht erfolgreich zurückgesetzt werden.");
+	$db->query($query) or die("Spielertabelle konnte nicht erfolgreich zurÃ¼ckgesetzt werden.");
 	$db->Close();
 }
 
@@ -98,7 +98,7 @@ function createMessagesTableSQL() {
 function createFixturesTableSQL() {
 	$db = makeConn();
 
-	// Verbindung überprüfen
+	// Verbindung Ã¼berprÃ¼fen
 	if (mysqli_connect_errno())
 	  die("Verbindung fehlgeschlagen: ". mysqli_connect_error());
 
@@ -130,8 +130,8 @@ function createFixturesTableSQL() {
 
 	$db->query("INSERT INTO fixtures ($cols) VALUES ('Hot Wok',			2,		2,		1305,			65,				3,			45,		65)");
 	$db->query("INSERT INTO fixtures ($cols) VALUES ('Klein&Fettig',2,		2,		2000,			55,				1,			45,		80)");
-	$db->query("INSERT INTO fixtures ($cols) VALUES ('°Modern-^',		2,		9,		17999.99,	50,				2,			99,		150)");
-	$db->query("INSERT INTO fixtures ($cols) VALUES ('Mittelgroß',	2,		12,		29000,		70,				5,			99,		450)");
+	$db->query("INSERT INTO fixtures ($cols) VALUES ('Â°Modern-^',		2,		9,		17999.99,	50,				2,			99,		150)");
+	$db->query("INSERT INTO fixtures ($cols) VALUES ('MittelgroÃŸ',	2,		12,		29000,		70,				5,			99,		450)");
 	$db->query("INSERT INTO fixtures ($cols) VALUES ('Rustikal',		2,		15,		51000,		75,				5,			99,		450)");
 	$db->query("INSERT INTO fixtures ($cols) VALUES ('FastFood',		2,		12,		600006,		180,			25,			99,		800)");
 
@@ -174,14 +174,15 @@ function createWorldSQL($map,$round) {
 	}
 
 
-//Welt hinzufügen
+//Welt hinzufÃ¼gen
 	$today = time();
 	$then = $today+2*60*60;
 	$then -= $then%(60*60);
 	$then -= $then%60;
+	$name = ""; //TODO what?
 	$sql_befehl = "INSERT INTO world (name, height, width, strdichte, lasttick, nexttick, birthday, round) VALUES ('$name',".$map["height"].",".$map["width"].",".$map["strdichte"].",$today,$then,$today,".($round+1).")";
 	if (!$db->query($sql_befehl))
-		die("Welt konnte nicht hinzugefügt werden! ".$sql_befehl."<br>");
+		die("Welt konnte nicht hinzugefÃ¼gt werden! ".$sql_befehl."<br>");
 
 //map eintragen
 	for ($y=0; $y<$map["height"]; $y++) {
@@ -214,12 +215,12 @@ function createCitiesSQL($map,$worldid) {
 	restcust INT DEFAULT NULL,
 	PRIMARY KEY (id))";
 	if (!$db->query($sql_befehl))
-		die("Städtetabelle konnte nicht angelegt werden! ".$sql_befehl."<br>");
+		die("StÃ¤dtetabelle konnte nicht angelegt werden! ".$sql_befehl."<br>");
 
 	for ($i=0; $i<$map["width"]; $i++) {
 		$sql_befehl = "ALTER TABLE cities ADD y".$i." VARCHAR(".(2*$map["width"]).") DEFAULT NULL";
 		if (!$db->query($sql_befehl))
-			die("Städtetabelle konnte nicht erweitert werden! ".$sql_befehl."<br>");
+			die("StÃ¤dtetabelle konnte nicht erweitert werden! ".$sql_befehl."<br>");
 	}
 
 	//cities dimensions
@@ -230,7 +231,6 @@ function createCitiesSQL($map,$worldid) {
 	for ($y=0; $y<$map["height"]; $y++) {
 		for ($x=0; $x<$map["width"]; $x++) {
 			if (hexdec($map[$x][$y]) > 0) {
-				$cmap = makemap($height,$width,$strdichte);
 				$hex = $map[$x][$y];
 				$nbh = getNbh($map,$x,$y);
 				$citycomplex = array();
@@ -238,6 +238,7 @@ function createCitiesSQL($map,$worldid) {
 				$popdichte = 11 + 6*countPatterns($nbh,"SI","SG","SH") + 100*countPatterns($nbh,"HG","HH","HI")/12;
 				$population = 1.5*$popdichte*(countPatternsInMap($map,"HG")+countPatternsInMap($map,"HH")+countPatternsInMap($map,"HI"));
 				$name = makeCityName();
+				$cmap = makemap($height,$width,$strdichte);
 
 				$sql_befehl = 'INSERT INTO cities (hex, worldid, name, x, y, height, width, strdichte, popdichte, population) VALUES ("'.$hex.'",'.$worldid.',"'.$name.'",'.$x.','.$y.','.$height.','.$width.','.$strdichte.','.$popdichte.','.$population.')';
 				if (!$db->query($sql_befehl))
@@ -255,12 +256,12 @@ function createCitiesSQL($map,$worldid) {
 							$price *= 0.05*$popdichte*(1+0.5*countPatterns($nbh,"SG","SH","SI"));
 							$sql_befehl = "INSERT INTO grounds (hex, worldid, city, x, y, area, remainingarea, price, state) VALUES ('".$cmap[$cx][$cy]."',".$worldid.",'".$hex."',".$cx.",".$cy.",".$size.",".$size.",".$price.",0)";
 							if(!$db->query($sql_befehl))
-								die("Grundstück erfolgreich eingetragen<br>");
+								die("GrundstÃ¼ck erfolgreich eingetragen<br>");
 						}
 					}
 					$sql_befehl = "UPDATE cities SET y".$cy."='".$string."' WHERE hex='".$hex."'";
 					if (!$db->query($sql_befehl))
-						die("Stadtkarte konnte nicht ergänzt werden! ".$sql_befehl."<br>");
+						die("Stadtkarte konnte nicht ergÃ¤nzt werden! ".$sql_befehl."<br>");
 				}
 			}
 		}
@@ -299,7 +300,7 @@ function createGroundsTableSQL($worldid) {
 	price4food INT DEFAULT 5,
 	PRIMARY KEY (id))";
 	if (!$db->query($sql_befehl))
-	  die("Grundstückstabelle konnte nicht angelegt werden! ".$sql_befehl."<br>");
+	  die("GrundstÃ¼ckstabelle konnte nicht angelegt werden! ".$sql_befehl."<br>");
 
 	$db->Close();
 }

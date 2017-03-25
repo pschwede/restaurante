@@ -32,30 +32,30 @@ if (isset($_GET["x"],$_GET["y"])) {
 			case "HH":
 			case "HI":
 				echo "Wohnhaus in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a><br>";
-				echo "Größe: ".$city["popdichte"]." Bewohner";
+				echo "GrÃ¶ÃŸe: ".$city["popdichte"]." Bewohner";
 				break;
 			case "SG":
 			case "SH":
 			case "SI":
-				echo "Straße in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a><br>";
+				echo "StraÃŸe in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a><br>";
 				break;
 			default:
 				switch($ground["state"]) {
 					case 0:
-						echo "Grundstück in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a><br>";
-						echo "Fläche: ".$ground["area"]."m²<br>";
+						echo "GrundstÃ¼ck in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a><br>";
+						echo "FlÃ¤che: ".$ground["area"]."mÂ²<br>";
 						echo "Wert:  ".number_format($ground["price"],2,","," ")."&euro;<br>";
 						echo "<a class=\"withIconLeft buy\" href=\"".$PHP_SELF."?city=".$_GET["city"]."&buy=".$token."&x=".$_GET["x"]."&y=".$_GET["y"]."\">Kaufen</a><br>";
 						break;
 					case 1:
-						echo "Grundstück in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a><br>";
-						echo "Fläche: ".$ground["area"]."m²<br>";
-						echo "Eigentümer: <a class=\"withIconRight journal\" href=\"game.php?ov=".$owner["id"]."\">".$owner["name"]."</a><br>";
+						echo "GrundstÃ¼ck in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a><br>";
+						echo "FlÃ¤che: ".$ground["area"]."mÂ²<br>";
+						echo "EigentÃ¼mer: <a class=\"withIconRight journal\" href=\"game.php?ov=".$owner["id"]."\">".$owner["name"]."</a><br>";
 						if ($ground["ownerid"] == $_SESSION["id"]) { //Spieler ist Besitzer
 							echo "</div><div class=\"info blue\">";
 							echo "<a href=\"".$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=2&x=".$_GET["x"]."&y=".$_GET["y"]."\" target=\"_top\" class=\"withIconLeft build\">Haus bauen</a> (500 000&euro;)<br>";
 							echo "<a href=\"".$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=3&x=".$_GET["x"]."&y=".$_GET["y"]."\" target=\"_top\" class=\"withIconLeft build\">Platz bauen</a> (15 000&euro;)<br>";
-							echo "<a href=\"".$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=4&x=".$_GET["x"]."&y=".$_GET["y"]."\" target=\"_top\" class=\"withIconLeft build\">begrünen</a> (5 000&euro;)<br>";
+							echo "<a href=\"".$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=4&x=".$_GET["x"]."&y=".$_GET["y"]."\" target=\"_top\" class=\"withIconLeft build\">begrÃ¼nen</a> (5 000&euro;)<br>";
 							echo "<a href=\"".$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=5&x=".$_GET["x"]."&y=".$_GET["y"]."\" target=\"_top\" class=\"withIconLeft build\">Wohnhaus bauen</a> (22 000&euro;)<br>";
 							echo "<a href=\"".$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=6&x=".$_GET["x"]."&y=".$_GET["y"]."\" target=\"_top\" class=\"withIconLeft build\">Hochhaus bauen</a> (1 500 000&euro;)<br>";
 							echo "<a class=\"withIconLeft buy\" href=\"".$PHP_SELF."?city=".$_GET["city"]."&sell=".$token."&x=".$_GET["x"]."&y=".$_GET["y"]."\">Verkaufen</a> (".number_format(-$ground["price"]*0.9,2,","," ")." &euro;)<br>";
@@ -65,19 +65,19 @@ if (isset($_GET["x"],$_GET["y"])) {
 						break;
 					case 2:
 						$city = getCity($worldid,$ground["city"]);
-						#alert("Also, ich hab ".countPatternsInMap($map,"HG")+countPatternsInMap($map,"HH")+countPatternsInMap($map,"HI")." Häuser gezählt..");
+						#alert("Also, ich hab ".countPatternsInMap($map,"HG")+countPatternsInMap($map,"HH")+countPatternsInMap($map,"HI")." HÃ¤user gezÃ¤hlt..");
 						echo "<a class=\"withIconRight view\" href=\"".$PHP_SELF."?city=".$_GET["city"]."&x=".$_GET["x"]."&y=".$_GET["y"]."\">Filiale</a> in <a class=\"withIconRight view\" href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a><br>";
 						if ($ground["ownerid"] == $_SESSION["id"]) { //Spieler ist Besitzer
-							echo "Eigentümer: Du!<br>";
+							echo "EigentÃ¼mer: Du!<br>";
 							echo "Kunden: ".$ground["customers"]."/".round(getMaxCustOfGround($ground))." (".(3*$city["population"]).")<br>";
 							echo "Energie: ".getEnergyOfGround($ground)." kWh<br>";
-							echo "Attraktivität: ".number_format(getAttrOfGround($ground),3,",","")." ";
+							echo "AttraktivitÃ¤t: ".number_format(getAttrOfGround($ground),3,",","")." ";
 							for($i=0; $i<$ground["stars"]; $i++) {
 								echo "&#x2605";
 							}
 							echo "<br>";
 							echo "Ertrag: ".number_format($ground["ingo"],2,",","")."&euro;<br>";
-							echo "Löhne: ".number_format($ground["pays"],2,",","")."&euro;<br>";
+							echo "LÃ¶hne: ".number_format($ground["pays"],2,",","")."&euro;<br>";
 							echo "Energie: ".number_format($ground["energycost"],2,",","")."&euro;<br>";
 							echo "</div><div class=\"info blue\">";
 							echo "Preise: "; 
@@ -86,10 +86,10 @@ if (isset($_GET["x"],$_GET["y"])) {
 							echo "<a class=\"withIconLeft furnish\" href=\"".$PHP_SELF."?city=".$_GET["city"]."&furnish=".$token."&x=".$_GET["x"]."&y=".$_GET["y"]."&what=".$_GET["what"]."\">Einrichtung</a><br>";
 							echo "<a class=\"withIconLeft employee\" href=\"".$PHP_SELF."?city=".$_GET["city"]."&personel=".$token."&x=".$_GET["x"]."&y=".$_GET["y"]."&what=".$_GET["what"]."\">Personal</a><br>";
 						} else {
-							echo "Eigentümer: <a class=\"withIconRight journal\" href=\"game.php?ov=".$owner["id"]."\">".$owner["name"]."</a><br>";
+							echo "EigentÃ¼mer: <a class=\"withIconRight journal\" href=\"game.php?ov=".$owner["id"]."\">".$owner["name"]."</a><br>";
 							echo "Kette: ".$owner["kette"]."<br>";
 							echo "Kunden: ".$ground["customers"]."<br>";
-							echo "Attraktivität: ".number_format(getAttrOfGround($ground),3,",","")." ";
+							echo "AttraktivitÃ¤t: ".number_format(getAttrOfGround($ground),3,",","")." ";
 							for($i=0; $i<$ground["stars"]; $i++) {
 								echo "&#x2605";
 							}
@@ -98,7 +98,7 @@ if (isset($_GET["x"],$_GET["y"])) {
 						break;
 					case 3:
 						echo "Parkplatz in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a><br>";
-						echo "Eigentümer: ".$owner["name"]."<br>";
+						echo "EigentÃ¼mer: ".$owner["name"]."<br>";
 						if ($ground["ownerid"] == $_SESSION["id"]) { //Spieler ist Besitzer
 							echo "Ertrag: ".number_format($ground["ingo"],2,",","")."&euro;<br>";
 							echo "Kunden: ".$ground["customers"]."<br>";
@@ -107,8 +107,8 @@ if (isset($_GET["x"],$_GET["y"])) {
 						}
 						break;
 					case 4:
-						echo "Begrünung in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a><br>";
-						echo "Eigentümer: ".$owner["name"]."<br>";
+						echo "BegrÃ¼nung in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a><br>";
+						echo "EigentÃ¼mer: ".$owner["name"]."<br>";
 						if ($ground["ownerid"] == $_SESSION["id"]) { //Spieler ist Besitzer
 							//echo "<a class=\"withIcon furnish\" href=\"".$PHP_SELF."?city=".$_GET["city"]."&furnish=".$token."&x=".$_GET["x"]."&y=".$_GET["y"]."\">Ausstatten</a><br>";
 						} else {
@@ -118,15 +118,15 @@ if (isset($_GET["x"],$_GET["y"])) {
 					case 5:
 						echo "Wohnhaus in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a><br>";
 						if ($ground["ownerid"] == $_SESSION["id"]) { //Spieler ist Besitzer
-							echo "Eigentümer: Du!<br>";
+							echo "EigentÃ¼mer: Du!<br>";
 							echo "Kunden: ".$ground["customers"]."/30<br>";
 							echo "Energie: ".getEnergyOfGround($ground)." kWh<br>";
 							echo "Ertrag: ".number_format($ground["ingo"],2,",","")."&euro;<br>";
-							echo "Löhne: ".number_format($ground["pays"],2,",","")."&euro;<br>";
+							echo "LÃ¶hne: ".number_format($ground["pays"],2,",","")."&euro;<br>";
 							echo "Energie: ".number_format($ground["energycost"],2,",","")."&euro;<br>";
 							echo "</div><div class=\"info blue\">";
 						} else {
-							echo "Eigentümer: <a class=\"withIconRight journal\" href=\"game.php?ov=".$owner["id"]."\">".$owner["name"]."</a><br>";
+							echo "EigentÃ¼mer: <a class=\"withIconRight journal\" href=\"game.php?ov=".$owner["id"]."\">".$owner["name"]."</a><br>";
 							echo "Kette: ".$owner["kette"]."<br>";
 							echo "Kunden: ".$ground["customers"]."<br>";
 							echo "<br>";
@@ -135,28 +135,28 @@ if (isset($_GET["x"],$_GET["y"])) {
 					case 6:
 						echo "Hochhaus in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a><br>";
 						if ($ground["ownerid"] == $_SESSION["id"]) { //Spieler ist Besitzer
-							echo "Eigentümer: Du!<br>";
+							echo "EigentÃ¼mer: Du!<br>";
 							echo "Kunden: ".$ground["customers"]."/90<br>";
 							echo "Energie: ".getEnergyOfGround($ground)." kWh<br>";
 							echo "Ertrag: ".number_format($ground["ingo"],2,",","")."&euro;<br>";
-							echo "Löhne: ".number_format($ground["pays"],2,",","")."&euro;<br>";
+							echo "LÃ¶hne: ".number_format($ground["pays"],2,",","")."&euro;<br>";
 							echo "Energie: ".number_format($ground["energycost"],2,",","")."&euro;<br>";
 							echo "</div><div class=\"info blue\">";
 						} else {
-							echo "Eigentümer: <a class=\"withIconRight journal\" href=\"game.php?ov=".$owner["id"]."\">".$owner["name"]."</a><br>";
+							echo "EigentÃ¼mer: <a class=\"withIconRight journal\" href=\"game.php?ov=".$owner["id"]."\">".$owner["name"]."</a><br>";
 							echo "Kette: ".$owner["kette"]."<br>";
 							echo "Kunden: ".$ground["customers"]."<br>";
 							echo "<br>";
 						}
 						break;
 					default:
-						echo "Mysteriöse Gegend in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a>!<br>";
+						echo "MysteriÃ¶se Gegend in <a href=\"game.php?x=".$city["x"]."&y=".$city["y"]."\">".$city["name"]."</a>!<br>";
 						break;
 				}
 				if($ground["ownerid"]==$_SESSION["id"] && $ground["state"]>1) {
 					echo "<a href=\"";
-					prompt("Wirklich abreißen?",$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=1&x=".$_GET["x"]."&y=".$_GET["y"]);
-					echo "\" target=\"_top\" class=\"withIconLeft build\">Abreißen (0&euro;)</a><br>";
+					prompt("Wirklich abreiÃŸen?",$PHP_SELF."?city=".$_GET["city"]."&build=".$token."&what=1&x=".$_GET["x"]."&y=".$_GET["y"]);
+					echo "\" target=\"_top\" class=\"withIconLeft build\">AbreiÃŸen (0&euro;)</a><br>";
 				}
 				if ($ground["ownerid"]>0 && $ground["ownerid"] != $_SESSION["id"] && $ground["state"]==2) {
 					echo "</div><div class=\"info red\">";
@@ -264,7 +264,7 @@ if (isset($_GET["x"],$_GET["y"])) {
 	}
 } else{
 	echo "Bitte Feld anklicken, oder auf..<br>";
-	echo "<a href=\"game.php?ov=0\" target=\"_top\" class=\"withIconLeft view\">Überblick</a><br>
+	echo "<a href=\"game.php?ov=0\" target=\"_top\" class=\"withIconLeft view\">Ãœberblick</a><br>
 					<a href=\"game.php\" target=\"_top\" class=\"withIconLeft world\">Karte</a>";
 }
 echo "</div>";
