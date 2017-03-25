@@ -97,7 +97,7 @@ span {
 		<td>
 			<h1 style="padding-left:275px;">Restaurante (Beta)</h1>
 			<a class="withIconTop faq" target="_blank" href="faq/">Was ist das?</a>
-			<a class="withIconTop blank" target="_blank" href="<?php $FORUM_URL ?>">Forum</a>
+			<a class="withIconTop blank" target="_blank" href="https://github.com/pschwede/restaurante/issues">Github</a>
 		</td>
 	</tr><tr>
 		<td class="main">

@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-include_once "config.php";
 include_once "smarttools.php";
 include_once "gamemaster.php";
 include_once "displays.php";
@@ -223,7 +222,7 @@ if(thisIsCityMap())
 						echo $player["kette"];
 						?></h1>
 					<a id="timer" class="titleOnly" title="<?php echo "next Tick: ".date("G:i:s",$nextTick); ?>"><?php echo date("G:i:s",$nextTick-$time) ?></a>
-					<a href="faq/faq.php" target="_blank" class="withIconTop faq">FAQ</a>
+					<a href="faq/index.html" target="_blank" class="withIconTop faq">FAQ</a>
 					<a href="game.php?highscore" target="_top" class="withIconTop blank">Highscore</a>
 					<a href="logout.php" target="_top" class="withIconTop logout">Logout</a>
 					<a href="config.php" target="_top" class="withIconTop config">Profil</a>

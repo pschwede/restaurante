@@ -25,7 +25,7 @@ function buyGround($worldid,$city,$hex,$playerid) {
 				$map = getMapFromSQL($worldid,$city);
 				$imax = getSizeOfArea($map, $ground["x"], $ground["y"], $hex, $area);
 				for ($i=0; $i<$imax; $i++) {
-					$xyp = split(",",$area[$i]);
+					$xyp = explode(",",$area[$i]);
 					$db->query("UPDATE grounds SET ownerid=".$playerid." WHERE worldid='".$worldid."' AND x='".$xyp[0]."' AND y='".$xyp[1]."' AND city='".$city."'");
 					$db->query("UPDATE grounds SET state=1 WHERE worldid='".$worldid."' AND x='".$xyp[0]."' AND y='".$xyp[1]."' AND city='".$city."'");
 				}
@@ -64,14 +64,14 @@ function sellGround($worldid,$city,$hex,$playerid) {
 		$map = getMapFromSQL($worldid,$city);
 		$imax = getSizeOfArea($map, $ground["x"], $ground["y"], $hex, $area);
 		foreach($area as $xypstring) {
-			$xyp = split(",",$xypstring);
+			$xyp = explode(",",$xypstring);
 			$gnd = getGround($worldid,$city,$xyp[2]);
 			$frei &= $gnd["state"]<=1;
 		}
 		if ($ground["ownerid"]>0 && $ground["state"]<=1 && $frei) {
 			//gesamtes Grundstück verkaufen
 			foreach($area as $xypstring) {
-				$xyp = split(",",$xypstring);
+				$xyp = explode(",",$xypstring);
 				$db->query("UPDATE grounds SET ownerid=NULL, stars=0 ,state=0 WHERE worldid=".$worldid." AND hex='".$xyp[2]."' AND city='".$city."'");// or die("error selling ground");
 			}
 			$db->query("UPDATE player SET konto=konto+".($ground["price"]*0.9).",outgo=outgo-".($ground["price"]*0.9)." WHERE id=".$playerid) or die("Fehler bei überweisung!");
@@ -176,30 +176,35 @@ function buyFixture($worldid,$city,$hex,$fixtureid,$playerid) {
 	} else if ($plr["konto"]<$fxt["price"]) {
 		echo "Zu wenig Geld";
 	} else {
-
+		$success = FALSE;
 		switch($fxt["class"]) {
 			case 1: //tisch
 				if($gnd["tablesid"]==$fxt["id"] || $gnd["tablesnum"]<=0){
 					$db->query("UPDATE grounds SET tablesid=".$fxt["id"].", tablesnum=".($gnd["tablesnum"]+1)." WHERE hex='".$gnd["hex"]."' AND city='$city' AND worldid=$worldid")
 						or die("error updating ground");
+					$success = TRUE;
 				} else echo "Erst alle Tische verkaufen!";
 				break;
 			case 2: //küche
 				if($gnd["kitchensid"]==$fxt["id"] || $gnd["kitchensnum"]<=0){
 					$db->query("UPDATE grounds SET kitchensid=".$fxt["id"].", kitchensnum=".($gnd["kitchensnum"]+1)." WHERE hex='".$gnd["hex"]."' AND city='$city' AND worldid=$worldid")
 						or die("error updating ground");
+					$success = TRUE;
 				} else echo "Erst alle Küchen verkaufen!";
 				break;
 			case 3: //bad
 				if($gnd["toiletsid"]==$fxt["id"] || $gnd["toiletsnum"]<=0){
 					$db->query("UPDATE grounds SET toiletsid=".$fxt["id"].", toiletsnum=".($gnd["toiletsnum"]+1)." WHERE hex='".$gnd["hex"]."' AND city='$city' AND worldid=$worldid")
 						or die("error updating ground");
+					$success = TRUE;
 				} else echo "Erst alle Toiletten verkaufen!";
 				break;
 		}
-		$db->query("UPDATE grounds SET remainingarea=".getRemainingSpaceOnGround($worldid,$gnd["city"],$gnd["hex"])." WHERE hex='".$gnd["hex"]."' AND city='$city' AND worldid=$worldid") or die("error calcing space");
-		$db->query("UPDATE player SET konto=".($plr["konto"]-$fxt["price"])." WHERE id=$playerid") or die("Fehler bei Überweisung");
-		$db->query("UPDATE player SET outgo=".($plr["outgo"]+$fxt["price"])." WHERE id=$playerid") or die("Fehler bei Überweisung");
+		if ($success) {
+			$db->query("UPDATE grounds SET remainingarea=".getRemainingSpaceOnGround($worldid,$gnd["city"],$gnd["hex"])." WHERE hex='".$gnd["hex"]."' AND city='$city' AND worldid=$worldid") or die("error calcing space");
+			$db->query("UPDATE player SET konto=".($plr["konto"]-$fxt["price"])." WHERE id=$playerid") or die("Fehler bei Überweisung");
+			$db->query("UPDATE player SET outgo=".($plr["outgo"]+$fxt["price"])." WHERE id=$playerid") or die("Fehler bei Überweisung");
+		}
 	}
 	$db->Close();
 }
@@ -315,7 +320,7 @@ function setCustomersOfCarparks($worldid,$city) {
 			$nbh = getNbh($map,$gnd["x"],$gnd["y"]);
 			$nbarray = array();
 			foreach($nbh as $nbstring) {
-				$nb = split(",",$nbstring);
+				$nb = explode(",",$nbstring);
 				if ($nb[2] == "SG" || $nb[2] == "SH" || $nb[2] == "SI") {
 					$strassen++;
 				} else if (hexdec($nb[2]) > 0) {

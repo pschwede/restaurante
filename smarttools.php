@@ -139,14 +139,14 @@ function countPatterns($area,$pattern1,$pattern2,$pattern3) {
 	$i = 0;
 	if(hexdec($pattern1)>0 || hexdec($pattern2)>0 || hexdec($pattern3)>0)
 		foreach($area as $field) { //x,y,pattern
-			$xyp = split(",",$field);
+			$xyp = explode(",",$field);
 			if(hexdec($xyp[2])>0) {
 				$i++;
 			}
 		}
 	else
 		foreach($area as $field) { //x,y,pattern
-			$xyp = split(",",$field);
+			$xyp = explode(",",$field);
 			if($xyp[2] == $pattern1 || $xyp[2] == $pattern2 || $xyp[2] == $pattern3) {
 				$i++;
 			}
@@ -157,7 +157,7 @@ function countPatterns($area,$pattern1,$pattern2,$pattern3) {
 function getNbhOfArea(&$map, $area) {
 	$nbh = array();
 	foreach($area as $field) {
-		$xyp = split(",",$field);
+		$xyp = explode(",",$field);
 		$nbh = array_merge($nbh,getNbh($map,$xyp[0],$xyp[1]));
 	}
 	//array_unique($nbh);
@@ -273,7 +273,7 @@ function getAreaGrounds($gnd) {
 	$map = getMapFromSQL($gnd["worldid"],$gnd["city"]);
 	getSizeOfArea($map,$gnd["x"],$gnd["y"],$map[$gnd["x"]][$gnd["y"]],$area);
 	foreach($area as $xypstr) {
-		$xyp = split(",",$xypstr);
+		$xyp = explode(",",$xypstr);
 		$grounds[] = getGround($gnd["worldid"],$gnd["city"],$xyp[2]);
 	}
 	return $grounds;
@@ -332,7 +332,7 @@ function getAttrOfGround($gnd) {
 		$nbh = getNbh($map,$gnd["x"],$gnd["y"]);
 		$num = 0;
 		foreach($nbh as $xypstring) {
-			$xyp = split(",",$xypstring);
+			$xyp = explode(",",$xypstring);
 			if(hexdec($xyp[2])>0) {
 				$ng = getGround($gnd["worldid"],$gnd["city"],$xyp[2]);
 				if($ng["state"]==4)
@@ -389,7 +389,7 @@ function getFinancialTendency($playerid) {
 function table_exists($table_name){
 	$db = makeConn();
 	$tablecount = $db->query("SELECT COUNT(*) FROM ".$table_name);
-	$exists = $tablecount->num_rows >= 1;
+	$exists = $tablecount != FALSE && $tablecount->num_rows >= 1;
 
 	$db->Close();
 	return $exists;

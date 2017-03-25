@@ -25,7 +25,7 @@ function drawMapInGame($worldid,$city,$playerid) {
 			$ground = getGround($worldid,$city,$map[$x][$y]);
 			if(hexdec($map[$x][$y])>0) {
 				if(!thisIsCityMap() && $cty = getCity($worldid,$map[$x][$y]))
-					echo " title=\"".$cty["name"].": ".$cty["population"]."\"";
+					echo " title=\"".$cty["name"].": ".$cty["population"]." Ew.\"";
 				switch ($ground["state"]) { //bebaut?
 					case 1:
 						if($ground["ownerid"] == $playerid) {
@@ -117,7 +117,7 @@ function drawTransfer() {
 	echo "<table class=\"overview\">
 	          <tr><th>Überweisung</th></tr>";
 	echo "<tr><td><form action=\"\" method=\"POST\">
-		<input type=\"text\" size=\"13\" name=\"transferMoney\" value=\"0\"> &euro an
+		<input type=\"text\" size=\"13\" name=\"transferMoney\" value=\"0\"> &euro; an
 		<select name=\"transferTo\">";
 	$r_plr = $db->query("SELECT * FROM player WHERE kette!='System' AND name!='System' AND id!=".$_SESSION["id"]." ORDER BY name");
 	while($plr = $r_plr->fetch_array(MYSQLI_ASSOC)) {
@@ -249,7 +249,7 @@ function messageCenter($playerid) {
 			sendMessage($_SESSION["id"],$_POST["toid"],$_POST["title"],$_POST["text"],3);
 		else {
 			$result = $db->query("SELECT id FROM player");
-			while($toid = $result->fetch_array(MYSQL_NUM))
+			while($toid = $result->fetch_array(MYSQLI_NUM))
 				sendMessage($_SESSION["id"],$toid[0],$_POST["title"],$_POST["text"],3);
 		}
 		echo "Nachricht \"".$_POST["title"]."\" Gesendet!";
@@ -392,13 +392,13 @@ function overview($who,$worldid) {
 	$db = makeConn();
 	$ids = array();
 	if($who<1 && $result = $db->query("SELECT id FROM player ORDER BY ia DESC")) {
-		while($obj = $result->fetch_array())
+		while($obj = $result->fetch_array(MYSQLI_NUM))
 			$ids[] = $obj[0];
 
 		usort($ids,"sortplr");
 
 	} elseif($result = $db->query("SELECT id FROM grounds WHERE ownerid=$who ORDER BY (SELECT name FROM cities WHERE hex=grounds.city) ASC, state DESC")) {
-		while($obj = $result->fetch_array())
+		while($obj = $result->fetch_array(MYSQLI_NUM))
 			$ids[] = $obj[0];
 	}
 	$c = 0;
@@ -423,8 +423,8 @@ function overview($who,$worldid) {
 			$result = $db->query("SELECT COUNT(*) FROM grounds WHERE state=2 AND ownerid=".$id);
 			$filanz = $result->fetch_array(MYSQLI_NUM);
 
-			if(date("z",(time()-$plr["lastdeed"]-60*60))<=60) {
-				echo "\t<tr class=\"".(($c%2 == 0) ? "mod2 " : "")."clickable\" title=\"Click to go show..\" onClick=\"window.location.href='game.php?ov=$id'\">
+			if(date("z",(time()-$plr["lastdeed"]))<=60) {
+				echo "\t<tr class=\"".(($c%2 == 0) ? "mod2 " : "")."clickable\" title=\"Click to show..\" onClick=\"window.location.href='game.php?ov=$id'\">
 					<th>$c</th>";
 				if($plr["logo"]!="")
 					echo "<td class=\"logo\"><img src=\"".$plr["logo"]."\" alt=\"\"></td>";
@@ -451,14 +451,14 @@ function overview($who,$worldid) {
 							Inaktiv seit ".
 							(($plr["lastdeed"]==0)
 								? "Beginn der Aufzeichnung"
-								: date("z, G:i",(time()-$plr["lastdeed"]-60*60)))
+								: date("z, G:i",(time()-$plr["lastdeed"]+60*60)))
 						."\">"
 							.(($plr["lastlogin"]==0)
 							? "nie"
-							: date("z, G:i",(time()-$plr["lastlogin"]-60*60)))
+							: date("z, G:i",(time()-$plr["lastlogin"]+60*60)))
 						."<br>";
 				if($plr["lastlogin"]>$plr["lastlogout"])
-					echo date("z, G:i",(time()-$plr["lastdeed"]-60*60));
+					echo date("z, G:i",(time()-$plr["lastdeed"]+60*60));
 				echo "</td>\t</tr>\n";
 			}
 		}
@@ -718,9 +718,10 @@ function furnish($worldid,$city,$hex,$what,$playerid) {
 		$db = makeConn();
 		$result = $db->query("SELECT class FROM fixtures ORDER BY class ASC");
 		$items = array();
-		while($array = $result->fetch_array(MYSQL_NUM)) {
-			if(!in_array($array[0],$items))
+		while($array = $result->fetch_array(MYSQLI_NUM)) {
+			if(!in_array($array[0],$items)) {
 				$items[] = $array[0];
+			}
 		}
 		foreach($items as $class) {
 			$bez = "";
@@ -1078,7 +1079,6 @@ function drawKickSomeAssMenu($worldid,$city,$hex) {
 	echo "\t<option onClick=\"window.location.href='game.php?city=".$_GET["city"]."&kicksome=$hex&x=".$_GET["x"]."&y=".$_GET["y"]."&what=2'\">Gerücht (10KE)</option>\n";
 	echo "\t<option onClick=\"window.location.href='game.php?city=".$_GET["city"]."&kicksome=$hex&x=".$_GET["x"]."&y=".$_GET["y"]."&what=5'\">Hygiene&Kritiker (20KE)</option>\n";
 	echo "\t</select><br>\n";
-	echo "<a href=\"http://psprince2.ps.funpic.de/forum/index.php?topic=46.0\" target=\"_blank\"><u>Diskutiere im Forum</u></a> über Attacken, die eingeführt werden sollten!";
 }
 
 function drawFinancialTendency($playerid) {
@@ -1115,8 +1115,8 @@ function drawIAMarquee($worldid) {
 function drawTipp() {
 	$tipps = array(
 		"Falls du Fragen über den Spielablauf oder andere Fragen hast, schau zuerst im FAQ nach, ob deine Frage bereits beantwortet wurde. Wenn nicht, kannst du selber eine Frage stellen! Jeder Spieler kann Antworten schreiben. Der Admin kann diese Editieren.",
-		"Um auf den Aktuellen Stand der diskutierten Spieländerungen zu bleiben, oder selbst Änderungen vorzuschlagen: Geht ins <a class=\"withIconLeft blank\" href=\"http://psprince2.ps.funpic.de/forum/index.php\" target=\"_blank\">Forum</a>!",
-		"Fang klein an! Hilfe findest du in der <a href=\"faq/faq.php\" target=\"_blank\">FAQ</a>",
+		"Um auf den Aktuellen Stand der diskutierten Spieländerungen zu bleiben, oder selbst Änderungen vorzuschlagen: Geht ins <a class=\"withIconLeft blank\" href=\"https://github.com/pschwede/restaurante/issues\" target=\"_blank\">Github</a>!",
+		"Fang klein an! Hilfe findest du in der <a href=\"faq/index.html\" target=\"_blank\">FAQ</a>",
 		"Wenn du zu wenig Geld hast: Versuche Aktien zu verkaufen!",
 		"Jede Runde bekommst du 1 KE bis du 35 KE hast. Manchmal kannst du aber auch im Glücksspiel 5 KE auf einmal gewinnen!"
 	);
@@ -1237,15 +1237,16 @@ function drawHighscore() {
 	$db = makeConn();
 
 	echo "<table class=\"overview\"><th title=\"Runde\">#</th><th>Spieler</th><th>Spielzeit</th></tr>";
-	$r_hs2 = $db->query("SELECT * FROM highscore2 WHERE 1 ORDER BY round DESC");
-	$mod2=0;
-	while($hs2 = $r_hs2->fetch_array(MYSQL_ASSOC)) {
-		if($hs2["playerid"]>0)
-			$plr = getPlayer($hs2["playerid"]);
-		else
-			$plr["name"] = "Niemand";
-		echo "<tr".(($mod2%2==0) ? " class=\"mod2\"" : "")."><th>".$hs2["round"]."</th><td>".$plr["name"]."</td><td>".date("z,G:i:s",$hs2["playtime"])."</td></tr>";
-		$mod2++;
+	if($r_hs2 = $db->query("SELECT * FROM highscore2 WHERE 1 ORDER BY round DESC")) {
+		$mod2=0;
+		while($hs2 = $r_hs2->fetch_array(MYSQLI_ASSOC)) {
+			if($hs2["playerid"]>0)
+				$plr = getPlayer($hs2["playerid"]);
+			else
+				$plr["name"] = "Niemand";
+			echo "<tr".(($mod2%2==0) ? " class=\"mod2\"" : "")."><th>".$hs2["round"]."</th><td>".$plr["name"]."</td><td>".date("z,G:i:s",$hs2["playtime"])."</td></tr>";
+			$mod2++;
+		}
 	}
 	echo "</table>";
 
@@ -1253,7 +1254,7 @@ function drawHighscore() {
 	echo "<table class=\"overview\"><tr><th title=\"Runde\">#</th><th>Kategorie</th><th>Spieler</th><th>Wert</th>";
 	$r_hs = $db->query("SELECT * FROM highscore WHERE 1 ORDER BY round DESC");
 	$mod2=0;
-	while($hs = $r_hs->fetch_array(MYSQL_ASSOC)) {
+	while($hs = $r_hs->fetch_array(MYSQLI_ASSOC)) {
 		echo "</tr><tr".(($mod2%2==0) ? " class=\"mod2\"" : "")."><th rowspan=\"9\">".$hs["round"]."</th>";
 		$plr = getPlayer($hs["iaid"]);
 		echo "<th>IA</th><td>".$plr["name"]."</td><td>".number_format($hs["ia"],2,","," ")."</td></tr><tr".(($mod2%2==0) ? " class=\"mod2\"" : "").">";
@@ -1264,7 +1265,7 @@ function drawHighscore() {
 		$plr = getPlayer($hs["customersid"]);
 		echo "<th>Kunden</th><td>".$plr["name"]."</td><td>".number_format($hs["customers"],0,","," ")."</td></tr><tr".(($mod2%2==0) ? " class=\"mod2\"" : "").">";
 
-		$plr = getPlayer($hs["energycostid"]);
+		$plr = getPlayer($hs["energyid"]);
 		echo "<th>Energie</th><td>".$plr["name"]."</td><td>".number_format($hs["energycost"],2,","," ")."&euro;</td></tr><tr".(($mod2%2==0) ? " class=\"mod2\"" : "").">";
 
 		$plr = getPlayer($hs["mieterid"]);
